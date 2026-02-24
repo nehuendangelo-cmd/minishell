@@ -3,10 +3,5 @@
 *.a
 minishell
 
-# Session instructions & local docs (local only)
-CLAUDE.md
-PLAN.md
-fichier_notion.txt
-
 # macOS
 .DS_Store
