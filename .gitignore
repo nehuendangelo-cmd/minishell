@@ -5,3 +5,6 @@ minishell
 
 # macOS
 .DS_Store
+
+# pdf
+minishell.subject.pdf
