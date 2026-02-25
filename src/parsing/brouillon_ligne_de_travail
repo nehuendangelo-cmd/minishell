@@ -1,0 +1,60 @@
+organisation perso :
+
+utils : 
+free.c : gestion memoire :
+ *  libérer tokens
+ *  libérer redirections
+ *  libérer commandes
+ *  libérer env
+ *  vérifier l’ordre pour pas double-free
+
+string :
+
+ *  dupliquer sous-chaîne
+ *  joindre deux strings
+ *  vérifier string vide
+ *  comparer strings shell ok
+
+char.c:
+check charactere :
+
+ *  est-ce un espace ?
+ *  est-ce un quote ?
+ *  est-ce un opérateur (`| < >`) ?
+ *  est-ce un caractère valide pour un mot ?
+
+parsing:
+
+transformer la ligne brute en tokens.
+
+ *  ignorer les espaces
+ *  détecter mots / pipes / redirections simples/doubles
+ *  créer liste de tokens
+
+quotes.c :
+
+gérer les quotes.
+ *  détecter ' et "
+ *  lire jusqu’à fermeture
+ *  signaler erreur si non fermé
+ *  marquer expansion autorisée ou non
+
+
+syntax.c:
+valider la ligne.
+ *  pipe au début/fin → erreur
+ *  deux pipes de suite → erreur
+ *  redirection sans mot → erreur
+ *  heredoc sans délimiteur → erreur
+
+
+build_command:
+
+construire commandes finales.
+
+ *  créer commande
+ *  remplir `argv`
+ *  attacher redirections
+ *  chaîner avec `next` si pipe
+
+ensuite gerer env, variable ? 
