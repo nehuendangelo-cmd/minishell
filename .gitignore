@@ -1,0 +1,7 @@
+# Compiled output
+*.o
+*.a
+minishell
+
+# macOS
+.DS_Store
