@@ -6,24 +6,39 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/25 01:58:40 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/02/26 16:42:58 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+static void temp_init_struct(t_cmd *cmd)
+{
+	static char *args[] = {"ls", "-la", NULL};
+	 
+	cmd->cmd_and_args = args;
+	
+	cmd->redirs = NULL;
+	cmd->next = NULL;
+}
 int	main(int argc, char **argv, char **envp)
 {
-	char	*line;
-	char	*prompt;
+	t_cmd	*cmd;
+	
+	(void)argc;
+	(void)argv;
 
-	prompt = "type something";
+
+	/*
 	while (1) 
 	{
 		line = readline(prompt);
 		if (line== NULL)
 			break ;
-		parser(line);
-		free(line);
 	}
-}
+	free(line);
+	*/
+	cmd = malloc(sizeof(t_cmd));
+	temp_init_struct(cmd);
+	execute(cmd, envp);
+	free(cmd);
+	}

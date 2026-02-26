@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 16:35:54 by nd-angel          #+#    #+#             */
-/*   Updated: 2026/02/25 17:03:10 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:55:43 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	free_paths(char **paths)
+{
+	int		i;
+	
+	if (!paths)
+		return ;
+	i = 0;
+	while (paths[i])
+	{
+		free(paths[i]);
+		i++;
+	}
+	free(paths);
+}
 char	**find_path_env(char **envp)
 {
 	int		i;
@@ -75,17 +89,3 @@ char	*find_cmdpath(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	free_paths(char **paths)
-{
-	int		i;
-	
-	if (!paths)
-		return ;
-	i = 0;
-	while (paths[i])
-	{
-		free(paths[i]);
-		i++;
-	}
-	free(paths);
-}

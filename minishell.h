@@ -6,13 +6,19 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/24 22:16:06 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/02/26 16:14:16 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+#include <readline/readline.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <fcntl.h>
+# include "libft/libft.h"
 
 /*
 ce dont j'ai besoin dans la structure pour la partie backend :
@@ -69,5 +75,13 @@ redirs->next ------------------->		redir->next = NULL
 
 
 */
+
+//fonctions executor
+void	execute(t_cmd *cmd, char **envp);
+int	make_child(pid_t *pid);
+int	set_child(t_cmd *cmd, char **envp);
+int    make_redirections(t_redir *redirs);
+char	*find_cmdpath(char *cmd, char **envp);
+// fin fonctions executor
 
 #endif 
