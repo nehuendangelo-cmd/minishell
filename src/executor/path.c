@@ -6,11 +6,13 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 16:35:54 by nd-angel          #+#    #+#             */
-/*   Updated: 2026/02/26 15:55:43 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/02/27 14:24:22 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	check_access_file(char *cmd_path);
 
 void	free_paths(char **paths)
 {
@@ -61,7 +63,22 @@ char	*make_valid_cmd_path(char *paths, char *cmd)
 	free(full_path);
 	return (NULL);
 }
-
+static int	check_access_file(char *cmd_path)
+{
+	if (access(cmd_path, F_OK) != 0)
+	{
+		ft_putstr_fd(cmd_path, 2);
+    ft_putendl_fd(": command not found", 2);
+		exit(127);
+	}
+	if (access(cmd_path, X_OK) != 0)
+	{
+		ft_putstr_fd(cmd_path, 2);
+ 		ft_putendl_fd(": permission denied", 2);
+		exit(126);
+	}
+	return (0);
+}
 char	*find_cmdpath(char *cmd, char **envp)
 {
 	char	**paths;
@@ -70,9 +87,8 @@ char	*find_cmdpath(char *cmd, char **envp)
 
 	if (ft_strchr(cmd, '/'))
 	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
+		check_access_file(cmd);
+		return (ft_strdup(cmd));
 	}
 	paths = find_path_env(envp);
 	if (!paths)
