@@ -15,7 +15,7 @@ string :
  *  vérifier string vide
  *  comparer strings shell ok
 
-char.c:
+///////char.c: */fonction ok creer a verifier apres compilation de tout si ok et pas d erreur*/
 check charactere :
 
  *  est-ce un espace ?

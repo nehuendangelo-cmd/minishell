@@ -23,6 +23,33 @@ typedef struct s_env
     struct s_env    *next;
 }   t_env;
 
+typedef struct s_token
+{
+    char            *name;
+    char            *value;
+    struct s_token    *next;
+}   t_token;
+
+typedef struct s_dir
+{
+    char            *name;
+    char            *value;
+    struct s_dir    *next;
+}   t_dir;
+
+typedef struct s_cmd
+{
+    char            *name;
+    char            *value;
+    struct s_cmd    *next;
+}   t_cmd;
+
+int ft_skip_quote(char *str, int i);
+int ft_op_valid(char *str, int i);
+int	ft_syntaxe_op(char *str, int i);
+int	ft_ispace(int s);
+int word_is_ok(char c);
+
 /*
 structure a ajouter pour : 
 
