@@ -49,7 +49,10 @@ int ft_op_valid(char *str, int i);
 int	ft_syntaxe_op(char *str, int i);
 int	ft_ispace(int s);
 int word_is_ok(char c);
-
+int ft_syntax_error(char *line);
+int ft_check_quote(char *str, int *err);
+int ft_quote_expanse(char *str, int i, int *exp);
+int ft_check_quote(char *str, int *err);
 /*
 structure a ajouter pour : 
 

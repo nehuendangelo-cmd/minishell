@@ -31,7 +31,7 @@ transformer la ligne brute en tokens.
  *  détecter mots / pipes / redirections simples/doubles
  *  créer liste de tokens
 
-quotes.c :
+///////////quotes.c : ok 
 
 gérer les quotes.
  *  détecter ' et "
@@ -40,7 +40,7 @@ gérer les quotes.
  *  marquer expansion autorisée ou non
 
 
-syntax.c:
+////////syntax.c: ok
 valider la ligne.
  *  pipe au début/fin → erreur
  *  deux pipes de suite → erreur
