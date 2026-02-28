@@ -8,7 +8,7 @@ free.c : gestion memoire :
  *  libérer env
  *  vérifier l’ordre pour pas double-free
 
-string :
+//////////ok string :
 
  *  dupliquer sous-chaîne
  *  joindre deux strings
@@ -23,7 +23,7 @@ check charactere :
  *  est-ce un opérateur (`| < >`) ?
  *  est-ce un caractère valide pour un mot ?
 
-parsing:
+////////ok parsing:
 
 transformer la ligne brute en tokens.
 
