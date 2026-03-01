@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 19:46:20 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/27 20:46:42 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 01:26:03 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,12 @@ void	print_export_env(char **envp)
 	}
 }
 
-void	modify_env(char ***envp, char *new_var)
+void	add_var(char ***envp, char *new_var, int size_envp)
 {
 	int		i;
-	char **new_envp;
-	char *eq;
+	char	**new_envp;
 	
-  eq = ft_strchr(new_var, '=');
-	if (!eq)
-		return ;
-	i = 0;
-	while ((*envp)[i])
-	{
-		if (ft_strncmp(new_var, (*envp)[i], eq - new_var) == 0)
-		{
-			(*envp)[i] = new_var;
-			return ;
-		}
-		i++;	
-	}
-	new_envp = malloc(sizeof(char *) * (i + 2));
+	new_envp = malloc(sizeof(char *) * (size_envp + 2));
 	if (!new_envp)
 		return ;
 	i = 0;
@@ -74,10 +60,54 @@ void	modify_env(char ***envp, char *new_var)
 	free(*envp);
 	*envp = new_envp;
 }
+void	modify_env_without_equal(char ***envp, char *new_var)
+{
+	int		i;
+
+	i = 0;
+	while ((*envp)[i])
+	{
+		if (ft_strncmp(new_var, (*envp)[i], (ft_strlen(new_var))) == 0
+			&& ((*envp)[i][ft_strlen(new_var)] == '='
+			 || (*envp)[i][ft_strlen(new_var)] == '\0'))
+				return ;
+		i++;	
+	}
+	add_var(envp, new_var, i);
+}
+void	modify_env(char ***envp, char *new_var)
+{
+	int		i;
+	char *eq;
+	
+  eq = ft_strchr(new_var, '=');
+	if (!eq)
+		return (modify_env_without_equal(envp, new_var));
+	i = 0;
+	while ((*envp)[i])
+	{
+		if (ft_strncmp(new_var, (*envp)[i], (eq - new_var + 1)) == 0)
+		{
+			(*envp)[i] = new_var;
+			return ;
+		}
+		i++;	
+	}
+	add_var(envp, new_var, i);
+}
 void	handle_export(char ***envp, char **cmd)
 {
+	int		i;
+
+	i = 1;
 	if (!cmd[1])
 		print_export_env(*envp);
 	else
-		modify_env(envp, cmd[1]);
+	while (cmd[i])
+	{
+		modify_env(envp, cmd[i]);
+		i++;
+	}
 }
+
+

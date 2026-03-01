@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 16:11:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/27 16:21:45 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/02/28 20:20:59 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ void handle_exit(char **cmd, int last_exit_code)
 		}
 		exit(ft_atoi(cmd[1]));
 	}
-	else 
+	else
 		exit(last_exit_code);
 }
