@@ -6,13 +6,13 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 01:09:27 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 00:01:38 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 18:50:57 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_unset(char ***envp, char *cmd)
+int	handle_unset(char ***envp, char *cmd)
 {
 		int		i;
 	char **new_envp;
@@ -30,10 +30,10 @@ void	handle_unset(char ***envp, char *cmd)
 		i++;	
 	}
 	if (to_delete == -1)                                                                                                       
-      return ;   
+      return (0);   
 	new_envp = malloc(sizeof(char *) * (i + 1));
 	if (!new_envp)
-		return ;
+		return (0);
 	i = 0;
 	
 	while ((*envp)[i])
@@ -45,4 +45,5 @@ void	handle_unset(char ***envp, char *cmd)
 	new_envp[j] = NULL;
 	free(*envp);
 	*envp = new_envp;
+	return (0);
 }

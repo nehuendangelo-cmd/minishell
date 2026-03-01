@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 19:46:20 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 11:47:19 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 19:15:51 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	modify_env_without_equal(char ***envp, char *new_var)
 	}
 	add_var(envp, new_var, i);
 }
-static void	modify_env(char ***envp, char *new_var)
+ void	modify_env(char ***envp, char *new_var)
 {
 	int		i;
 	char *eq;
@@ -95,7 +95,7 @@ static void	modify_env(char ***envp, char *new_var)
 	}
 	add_var(envp, new_var, i);
 }
-void	handle_export(char ***envp, char **cmd)
+int	handle_export(char ***envp, char **cmd)
 {
 	int		i;
 
@@ -108,6 +108,7 @@ void	handle_export(char ***envp, char **cmd)
 		modify_env(envp, cmd[i]);
 		i++;
 	}
+	return (0);
 }
 
 

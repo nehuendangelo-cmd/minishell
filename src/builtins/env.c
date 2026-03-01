@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envp.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 16:01:14 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/27 16:06:48 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 18:48:51 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_env(char **envp)
+int	handle_env(char **envp)
 {
 	int		i;
 
@@ -22,4 +22,5 @@ void	handle_env(char **envp)
 		ft_putendl_fd(envp[i], 1);
 		i++;
 	}
+	return (0);
 }

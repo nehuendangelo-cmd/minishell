@@ -6,13 +6,13 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 15:14:34 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/28 20:16:30 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 18:48:40 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_echo(char **cmd)
+int	handle_echo(char **cmd)
 {
 	int		i;
 	int		add_newline;
@@ -35,4 +35,5 @@ void	handle_echo(char **cmd)
 	}
 	if (add_newline == 1)
 		write(1, "\n", 1);
+	return (0);
 }

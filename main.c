@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 17:54:04 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 19:16:54 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	*shell;
 	(void)argc;
 	(void)argv;
-	static char *args1[] = {"export", "TOTO=hello", NULL};
-	static char *args2[] = {"export", NULL};
+	static char *args1[] = {"cd", "/tmp", NULL};
+	static char *args2[] = {"pwd", NULL};
 
 	/*
 	while (1) 

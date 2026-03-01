@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 11:47:56 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 19:16:02 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,15 @@ int    make_redirections(t_redir *redirs);
 char	*find_cmdpath(char *cmd, char **envp);
 // fin fonctions executor
 
-// fonctions bultins
-void	handle_cd(char **cmd, char **envp);
-void	handle_echo(char **cmd);
-void	handle_env(char **envp);
+// fonctions builtin	handle_cd(char **cmd, char **envp);
+int	handle_echo(char **cmd);
+int	handle_env(char **envp);
 void handle_exit(char **cmd, int last_exit_code);
-void	handle_export(char ***envp, char **cmd);
-void	handle_pwd(void);
-void	handle_unset(char ***envp, char *cmd);
+int	handle_export(char ***envp, char **cmd);
+int	handle_pwd(void);
+int	handle_unset(char ***envp, char *cmd);
+int	handle_cd(char **cmd, char ***envp);
+ void	modify_env(char ***envp, char *new_var);
 //fin fonction builtin
 
 #endif 
