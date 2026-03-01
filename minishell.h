@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/26 16:14:16 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 11:47:56 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ typedef struct s_cmd
 }	t_cmd;
 
 
+typedef struct s_shell
+{
+  char    **envp;
+  int     last_exit;
+} t_shell;
 /*
 exemple :
 
@@ -77,11 +82,21 @@ redirs->next ------------------->		redir->next = NULL
 */
 
 //fonctions executor
-void	execute(t_cmd *cmd, char **envp);
+void	execute(t_cmd *cmd, t_shell *shell);
 int	make_child(pid_t *pid);
 int	set_child(t_cmd *cmd, char **envp);
 int    make_redirections(t_redir *redirs);
 char	*find_cmdpath(char *cmd, char **envp);
 // fin fonctions executor
+
+// fonctions bultins
+void	handle_cd(char **cmd, char **envp);
+void	handle_echo(char **cmd);
+void	handle_env(char **envp);
+void handle_exit(char **cmd, int last_exit_code);
+void	handle_export(char ***envp, char **cmd);
+void	handle_pwd(void);
+void	handle_unset(char ***envp, char *cmd);
+//fin fonction builtin
 
 #endif 

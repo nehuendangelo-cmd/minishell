@@ -6,13 +6,13 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 16:50:40 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/27 19:46:18 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 11:45:24 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_home_env(char **envp, char *path_name)
+static char	*find_home_env(char **envp, char *path_name)
 {
 	int		i;
 	char	*paths;

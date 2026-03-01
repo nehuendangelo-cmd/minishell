@@ -6,7 +6,7 @@
 #    By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/26 16:01:44 by nehuen            #+#    #+#              #
-#    Updated: 2026/02/26 16:16:23 by nehuen           ###   ########.fr        #
+#    Updated: 2026/03/01 11:51:05 by nehuen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,13 @@ SRCS = src/executor/executor.c \
 		 src/executor/make.child.c \
 		 src/executor/path.c \
 		 src/executor/redirections.c \
+		 src/builtins/cd.c \
+		 src/builtins/echo.c \
+		 src/builtins/env.c \
+		 src/builtins/exit.c \
+		 src/builtins/export.c \
+		 src/builtins/handle_pwd.c \
+		 src/builtins/unset.c \
 		 main.c \
 		 
 			 

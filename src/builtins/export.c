@@ -6,13 +6,13 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 19:46:20 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 01:26:03 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/01 11:47:19 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_export_env(char **envp)
+static void	print_export_env(char **envp)
 {
 	int		i;
 	int		y;
@@ -41,7 +41,7 @@ void	print_export_env(char **envp)
 	}
 }
 
-void	add_var(char ***envp, char *new_var, int size_envp)
+static void	add_var(char ***envp, char *new_var, int size_envp)
 {
 	int		i;
 	char	**new_envp;
@@ -60,7 +60,7 @@ void	add_var(char ***envp, char *new_var, int size_envp)
 	free(*envp);
 	*envp = new_envp;
 }
-void	modify_env_without_equal(char ***envp, char *new_var)
+static void	modify_env_without_equal(char ***envp, char *new_var)
 {
 	int		i;
 
@@ -75,7 +75,7 @@ void	modify_env_without_equal(char ***envp, char *new_var)
 	}
 	add_var(envp, new_var, i);
 }
-void	modify_env(char ***envp, char *new_var)
+static void	modify_env(char ***envp, char *new_var)
 {
 	int		i;
 	char *eq;
