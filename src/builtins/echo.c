@@ -6,25 +6,46 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 15:14:34 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 18:48:40 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/02 16:43:32 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	is_valid_n_flag(char *cmd)
+{
+	int		y;
+
+	y = 0;
+	if (cmd && ft_strncmp(cmd, "-n", 2) == 0)
+	{
+		y++;
+		while (cmd[y] == 'n')
+			y++;
+		if (cmd[y])
+			return (0);
+		else 
+			return (1);
+	}
+	else
+		return (0);
+}
 int	handle_echo(char **cmd)
 {
 	int		i;
 	int		add_newline;
 
-	
 	i = 1;
 	add_newline = 1;
-	if (cmd[1] && ft_strncmp(cmd[i], "-n", 2) == 0)
+	while (cmd[i])
 	{
-		while (cmd[i] && ft_strncmp(cmd[i], "-n", 2) == 0)
+		if (is_valid_n_flag(cmd[i]))
+		{
+			add_newline = 0;
 			i++;
-		add_newline = 0;
+		}
+		else
+			break;
 	}
 	while (cmd[i])
 	{
