@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/02 16:36:32 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/03 19:54:39 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	*shell;
 	(void)argc;
 	(void)argv;
-	static char *args1[] = {"echo", "-nna", "salut", NULL};
+	static char *args1[] = {"ls grep src", NULL};
 	//static char *args2[] = {"pwd", NULL};
 
 	/*

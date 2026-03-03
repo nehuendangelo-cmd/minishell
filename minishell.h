@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 19:16:02 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/03 19:51:19 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,19 @@ typedef struct s_cmd
 {
 	char		**cmd_and_args;
 	t_redir *redirs;
+
 	struct s_cmd *next;
 }	t_cmd;
 
+typedef struct s_pipe                                            
+{                                                                                                              
+    int     pipe_fd[2];                                            
+    int     prev_read_pipe;                                                                                     
+    int     *pids_array;                                                 
+    int     nb_pids;    
+		int			status;                                                  
+    char    *here_doc_limiter;                                    
+}   t_pipe; 
 
 typedef struct s_shell
 {
@@ -84,10 +94,20 @@ redirs->next ------------------->		redir->next = NULL
 //fonctions executor
 void	execute(t_cmd *cmd, t_shell *shell);
 int	make_child(pid_t *pid);
-int	set_child(t_cmd *cmd, char **envp);
 int    make_redirections(t_redir *redirs);
 char	*find_cmdpath(char *cmd, char **envp);
+void	free_paths(char **paths);
 // fin fonctions executor
+
+//fonctions pipes
+void	execute_pipeline(t_cmd *cmd, t_shell *shell, char **envp);
+
+void		set_first_child(t_pipe *p, t_cmd *cmd, char **envp);
+void		set_middle_child(t_pipe *p, t_cmd *cmd, char **envp);
+void		set_last_child(t_pipe *p, t_cmd *cmd, char **envp);
+void	error_execve_cmd(char *cmd_path, char **cmd_args);
+void	error_cmd_path(char **cmd_args);
+
 
 // fonctions builtin	handle_cd(char **cmd, char **envp);
 int	handle_echo(char **cmd);

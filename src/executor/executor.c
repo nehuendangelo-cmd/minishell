@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/02 13:31:19 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/03 19:48:29 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,25 @@ void	execute(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
-
+	char *cmd_path;
+	
 	if (is_bultin(cmd, shell))
 		return ;
-	if (make_child(&pid) == -1)
-		return ;
-	if (pid == 0)
-		set_child(cmd, shell->envp);
-	waitpid(pid, &status, 0);
-	shell->last_exit = WEXITSTATUS(status);
+	if (cmd->next)
+		execute_pipeline(cmd, shell, shell->envp);
+	else
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
+			if (!cmd_path)
+				error_cmd_path(cmd->cmd_and_args);
+			execve(cmd_path, cmd->cmd_and_args, shell->envp);
+			error_execve_cmd(cmd_path, cmd->cmd_and_args);
+		}
+		waitpid(pid, &status, 0);
+		shell->last_exit = WEXITSTATUS(status);
+	}
 }
+
