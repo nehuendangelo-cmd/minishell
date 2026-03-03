@@ -25,25 +25,6 @@ int ft_quote_expanse(char *str, int i, int *exp)
     return pos + 1; 
 }
 
-int ft_skip_quote(char *str, int i)
-{
-	char	quote;
-	int		pos;
-
-	if (!str || !str[i])
-		return (i);
-
-	quote = str[i];        
-	pos = i + 1;           
-	while (str[pos] && str[pos] != quote)
-		pos++;
-
-	if (str[pos] == quote)     
-		return (pos + 1);
-
-	return (pos);              
-}
-
 int ft_check_quote(char *str, int *err)
 {
     int i = 0;
@@ -67,3 +48,4 @@ int ft_check_quote(char *str, int *err)
     }
     return 1;
 }
+

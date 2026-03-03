@@ -35,7 +35,16 @@ void ft_add_double_op_token(t_token **head, char *line, int *i)
         token->type = WORD; 
         token->value = ft_strdup(""); 
     }
-    ft_lstadd_back(head, token);
+    
+    if (!*head)
+        *head = token;
+    else
+    {
+        t_token *tmp = *head;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = token;
+    }
 }
 
 void ft_add_single_op_token(t_token **head, char *line, int *i)
@@ -60,7 +69,16 @@ void ft_add_single_op_token(t_token **head, char *line, int *i)
     token->value[1] = '\0';
 
     (*i)++;
-    ft_lstadd_back(head, token);
+    
+    if (!*head)
+        *head = token;
+    else
+    {
+        t_token *tmp = *head;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = token;
+    }
 }
 
 void ft_add_word_token(t_token **head, char *line, int *i)
@@ -80,13 +98,18 @@ void ft_add_word_token(t_token **head, char *line, int *i)
         return;
     token->next = NULL;
     token->type = WORD;
-
-    char buffer[len + 1];
-    ft_strncpy(buffer, &line[start], len);
-    buffer[len] = '\0';
-    token->value = ft_strdup(buffer);
-
-    ft_lstadd_back(head, token);
+    token->quote_type = NO_QUOTE;
+    token->value = ft_substr(line, start, len);
+    
+    if (!*head)
+        *head = token;
+    else
+    {
+        t_token *tmp = *head;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = token;
+    }
 }
 
 
