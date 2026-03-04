@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 18:45:47 by nd-angel          #+#    #+#             */
-/*   Updated: 2026/02/25 21:12:43 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/03/04 16:52:37 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ int    make_redirections(t_redir *redirs)
 				return (perror("Error opening infile"), -1);
 			dup2(fd, STDOUT_FILENO);
 		}
-		close(fd);
+		if (redirs->type == REDIR_HEREDOC)
+		{
+			dup2(redirs->pipe_fd[0], 0);
+			close(redirs->pipe_fd[0]);
+		}
 		redirs = redirs->next;
 	}
 	return (0);

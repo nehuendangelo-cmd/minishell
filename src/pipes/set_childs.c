@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:34:23 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/03 19:27:49 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/04 17:21:01 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void		set_first_child(t_pipe *p, t_cmd *cmd, char **envp)
 	close(p->pipe_fd[0]);
 	close(p->pipe_fd[1]);
 	free(p->pids_array);
+	make_redirections(cmd->redirs);
 	execve(cmd_path, cmd->cmd_and_args, envp);
 	error_execve_cmd(cmd_path, cmd->cmd_and_args);
 }
@@ -57,6 +58,7 @@ void		set_middle_child(t_pipe *p, t_cmd *cmd, char **envp)
 	close(p->pipe_fd[0]);
 	close(p->pipe_fd[1]);
 	free(p->pids_array);
+	make_redirections(cmd->redirs);
 	execve(cmd_path, cmd->cmd_and_args, envp);
 	error_execve_cmd(cmd_path, cmd->cmd_and_args);
 }
@@ -70,6 +72,7 @@ void		set_last_child(t_pipe *p, t_cmd *cmd, char **envp)
 	dup2(p->prev_read_pipe, 0);
 	close(p->prev_read_pipe);
 	free(p->pids_array);
+	make_redirections(cmd->redirs);
 	execve(cmd_path, cmd->cmd_and_args, envp);
 	error_execve_cmd(cmd_path, cmd->cmd_and_args);
 }

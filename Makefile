@@ -6,7 +6,7 @@
 #    By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/26 16:01:44 by nehuen            #+#    #+#              #
-#    Updated: 2026/03/03 18:01:12 by nehuen           ###   ########.fr        #
+#    Updated: 2026/03/04 23:09:55 by nehuen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ LIBFT = ./libft/libft.a
 SRCS = src/executor/executor.c \
 		 src/executor/make.child.c \
 		 src/executor/path.c \
-		 src/executor/redirections.c \
 		 src/builtins/cd.c \
 		 src/builtins/echo.c \
 		 src/builtins/env.c \
@@ -35,7 +34,10 @@ SRCS = src/executor/executor.c \
 		 src/builtins/unset.c \
 		 src/pipes/pipes.c \
 		 src/pipes/set_childs.c \
+		 src/redirections/heredoc.c \
+		 src/redirections/redirections.c \
 		 main.c \
+		 
 		 
 			 
 OBJS = $(SRCS:.c=.o)

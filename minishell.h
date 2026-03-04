@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/03 19:51:19 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/04 16:14:24 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_redir
 {
 	t_redir_type	type; // ecrire directement REDIR_IN ou autre 
 	char					*file; //nom du fichier ou delimiteur si here doc
+	int							pipe_fd[2];
 	struct s_redir	*next;
 }	t_redir;
 
@@ -108,6 +109,9 @@ void		set_last_child(t_pipe *p, t_cmd *cmd, char **envp);
 void	error_execve_cmd(char *cmd_path, char **cmd_args);
 void	error_cmd_path(char **cmd_args);
 
+// heredoc
+void	process_heredocs(t_cmd *cmd);
+void	handle_heredoc(t_redir *redir);
 
 // fonctions builtin	handle_cd(char **cmd, char **envp);
 int	handle_echo(char **cmd);

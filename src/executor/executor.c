@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/03 19:48:29 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/04 16:57:57 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	execute(t_cmd *cmd, t_shell *shell)
 	int		status;
 	char *cmd_path;
 	
+	process_heredocs(cmd);
 	if (is_bultin(cmd, shell))
 		return ;
 	if (cmd->next)
@@ -53,6 +54,7 @@ void	execute(t_cmd *cmd, t_shell *shell)
 		pid = fork();
 		if (pid == 0)
 		{
+			make_redirections(cmd->redirs);
 			cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
 			if (!cmd_path)
 				error_cmd_path(cmd->cmd_and_args);

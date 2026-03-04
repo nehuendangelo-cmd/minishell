@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/03 19:54:39 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/04 23:31:07 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,24 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_cmd	*cmd;
 	t_shell	*shell;
+	t_redir *redir = malloc(sizeof(t_redir));
+	t_redir *redir2 = malloc(sizeof(t_redir));
+	//t_cmd *cmd2 = malloc(sizeof(t_cmd));
+	
+	
+	
+	redir->type = REDIR_HEREDOC;
+	redir->file = "EOF";
+	redir->next = redir2;
+	
+	redir2->type = REDIR_OUT;
+	redir2->file = "out.txt";
+	redir2->next = NULL;
+	
 	(void)argc;
 	(void)argv;
-	static char *args1[] = {"ls grep src", NULL};
-	//static char *args2[] = {"pwd", NULL};
+	static char *args1[] = {"cat", NULL};
+	// static char *args2[] = {"grep", "hello", NULL};
 
 	/*
 	while (1) 
@@ -64,6 +78,11 @@ int	main(int argc, char **argv, char **envp)
 	shell = malloc(sizeof(t_shell));
 	temp_init_struct(cmd, shell, envp);
 	cmd->cmd_and_args = args1;
+	cmd->redirs = redir;
+	cmd->next = NULL;
+	//cmd2->cmd_and_args = args2;
+	//cmd2->redirs = NULL;
+	//cmd2->next = NULL;
 	execute(cmd, shell);
 	//cmd->cmd_and_args = args2;
 	//execute(cmd, shell);
