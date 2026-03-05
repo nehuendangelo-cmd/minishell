@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/04 16:14:24 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/05 14:45:22 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,11 @@ void	free_paths(char **paths);
 // fin fonctions executor
 
 //fonctions pipes
-void	execute_pipeline(t_cmd *cmd, t_shell *shell, char **envp);
+void	execute_pipeline(t_cmd *cmd, t_shell *shell);
 
-void		set_first_child(t_pipe *p, t_cmd *cmd, char **envp);
-void		set_middle_child(t_pipe *p, t_cmd *cmd, char **envp);
-void		set_last_child(t_pipe *p, t_cmd *cmd, char **envp);
+void		set_first_child(t_pipe *p, t_cmd *cmd, t_shell *shell);
+void		set_middle_child(t_pipe *p, t_cmd *cmd, t_shell *shell);
+void		set_last_child(t_pipe *p, t_cmd *cmd, t_shell *shell);
 void	error_execve_cmd(char *cmd_path, char **cmd_args);
 void	error_cmd_path(char **cmd_args);
 
@@ -122,6 +122,7 @@ int	handle_pwd(void);
 int	handle_unset(char ***envp, char *cmd);
 int	handle_cd(char **cmd, char ***envp);
  void	modify_env(char ***envp, char *new_var);
+int		is_bultin(t_cmd *cmd, t_shell *shell);
 //fin fonction builtin
 
 #endif 

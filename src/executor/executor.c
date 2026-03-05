@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/04 16:57:57 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/05 14:44:53 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ void	execute(t_cmd *cmd, t_shell *shell)
 	char *cmd_path;
 	
 	process_heredocs(cmd);
-	if (is_bultin(cmd, shell))
+	if (!cmd->next && is_bultin(cmd, shell))
 		return ;
 	if (cmd->next)
-		execute_pipeline(cmd, shell, shell->envp);
+		execute_pipeline(cmd, shell);
 	else
 	{
 		pid = fork();

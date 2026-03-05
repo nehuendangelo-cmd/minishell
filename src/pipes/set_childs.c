@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:34:23 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/04 17:21:01 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/05 15:54:16 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,28 @@ void	error_execve_cmd(char *cmd_path, char **cmd_args)
 	exit(127);
 }
 
-void		set_first_child(t_pipe *p, t_cmd *cmd, char **envp)
+void		set_first_child(t_pipe *p, t_cmd *cmd, t_shell *shell)
 {
 	char	*cmd_path;
-
-	cmd_path = find_cmdpath(cmd->cmd_and_args[0], envp);
-	if (!cmd_path)
-		error_cmd_path(cmd->cmd_and_args);
+	
 	dup2(p->pipe_fd[1], 1);
 	close(p->pipe_fd[0]);
 	close(p->pipe_fd[1]);
 	free(p->pids_array);
 	make_redirections(cmd->redirs);
-	execve(cmd_path, cmd->cmd_and_args, envp);
+	if (is_bultin(cmd, shell))
+    exit(shell->last_exit);
+	cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
+	if (!cmd_path)
+		error_cmd_path(cmd->cmd_and_args);
+	execve(cmd_path, cmd->cmd_and_args, shell->envp);
 	error_execve_cmd(cmd_path, cmd->cmd_and_args);
 }
 
-void		set_middle_child(t_pipe *p, t_cmd *cmd, char **envp)
+void		set_middle_child(t_pipe *p, t_cmd *cmd, t_shell *shell)
 {
 	char	*cmd_path;
 
-	cmd_path = find_cmdpath(cmd->cmd_and_args[0], envp);
-	if (!cmd_path)
-		error_cmd_path(cmd->cmd_and_args);
 	dup2(p->prev_read_pipe, 0);
 	dup2(p->pipe_fd[1], 1);
 	close(p->prev_read_pipe);
@@ -59,20 +58,27 @@ void		set_middle_child(t_pipe *p, t_cmd *cmd, char **envp)
 	close(p->pipe_fd[1]);
 	free(p->pids_array);
 	make_redirections(cmd->redirs);
-	execve(cmd_path, cmd->cmd_and_args, envp);
+	if (is_bultin(cmd, shell))
+    exit(shell->last_exit);
+	cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
+	if (!cmd_path)
+		error_cmd_path(cmd->cmd_and_args);
+	execve(cmd_path, cmd->cmd_and_args, shell->envp);
 	error_execve_cmd(cmd_path, cmd->cmd_and_args);
 }
-void		set_last_child(t_pipe *p, t_cmd *cmd, char **envp)
+void		set_last_child(t_pipe *p, t_cmd *cmd, t_shell *shell)
 {
 	char	*cmd_path;
 
-	cmd_path = find_cmdpath(cmd->cmd_and_args[0], envp);
-	if (!cmd_path)
-		error_cmd_path(cmd->cmd_and_args);
 	dup2(p->prev_read_pipe, 0);
 	close(p->prev_read_pipe);
 	free(p->pids_array);
 	make_redirections(cmd->redirs);
-	execve(cmd_path, cmd->cmd_and_args, envp);
+	if (is_bultin(cmd, shell))
+    exit(shell->last_exit);
+	cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
+	if (!cmd_path)
+		error_cmd_path(cmd->cmd_and_args);
+	execve(cmd_path, cmd->cmd_and_args, shell->envp);
 	error_execve_cmd(cmd_path, cmd->cmd_and_args);
 }

@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 17:20:19 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/03 18:00:23 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/05 14:43:18 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void    init_pipes(t_pipe *p, t_cmd *cmd)
 		exit(EXIT_FAILURE);
 }
 
-void	execute_pipeline(t_cmd *cmd, t_shell *shell, char **envp)
+void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 {
 	int		i;
 	t_pipe	p;
@@ -51,11 +51,11 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell, char **envp)
 		if (p.pids_array[i] == 0)
 		{
 			if (p.prev_read_pipe == -1)
-				set_first_child(&p, cmd, envp);
+				set_first_child(&p, cmd, shell);
 			else if (cmd->next)
-				set_middle_child(&p, cmd, envp);
+				set_middle_child(&p, cmd, shell);
 			else
-				set_last_child(&p, cmd, envp);
+				set_last_child(&p, cmd, shell);
 		}
 		if(cmd->next)
 			close(p.pipe_fd[1]);
