@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/04 23:31:07 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/07 19:10:14 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+ int g_signal = 0;
+ 
 static char **ft_copy_env(char **envp)
 {
 	char **new_envp;
@@ -30,62 +32,33 @@ static char **ft_copy_env(char **envp)
 	new_envp[i] = NULL;
 	return (new_envp);
 }
-static void temp_init_struct(t_cmd *cmd, t_shell *shell, char **envp)
-{
-	/*
-	cmd->cmd_and_args = args;
-	cmd->redirs = NULL;
-	cmd->next = NULL;
-	*/
-	(void)cmd;
 
-	shell->envp = ft_copy_env(envp);
-	shell->last_exit = 0;
-}
 int	main(int argc, char **argv, char **envp)
 {
-	t_cmd	*cmd;
-	t_shell	*shell;
-	t_redir *redir = malloc(sizeof(t_redir));
-	t_redir *redir2 = malloc(sizeof(t_redir));
-	//t_cmd *cmd2 = malloc(sizeof(t_cmd));
+	t_shell	shell;
+	char		*line;
 	
-	
-	
-	redir->type = REDIR_HEREDOC;
-	redir->file = "EOF";
-	redir->next = redir2;
-	
-	redir2->type = REDIR_OUT;
-	redir2->file = "out.txt";
-	redir2->next = NULL;
-	
+	;
 	(void)argc;
 	(void)argv;
-	static char *args1[] = {"cat", NULL};
-	// static char *args2[] = {"grep", "hello", NULL};
-
-	/*
-	while (1) 
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+	shell.envp = ft_copy_env(envp);
+	shell.last_exit = 0;
+	(void)shell
+	while (1)
 	{
-		line = readline(prompt);
-		if (line== NULL)
+		line = readline("minishell$");
+		if (!line)
 			break ;
+		if (line[0] == '\0')                                                  
+		{               
+			free(line);                                                       
+			continue ;                                                        
+		}
+		add_history(line);
+		//parse(line, cmd);
+		//execute(cmd, shell);
+		free(line);
 	}
-	free(line);
-	*/
-	cmd = malloc(sizeof(t_cmd));
-	shell = malloc(sizeof(t_shell));
-	temp_init_struct(cmd, shell, envp);
-	cmd->cmd_and_args = args1;
-	cmd->redirs = redir;
-	cmd->next = NULL;
-	//cmd2->cmd_and_args = args2;
-	//cmd2->redirs = NULL;
-	//cmd2->next = NULL;
-	execute(cmd, shell);
-	//cmd->cmd_and_args = args2;
-	//execute(cmd, shell);
-	// execute(cmd, shell);
-	free(cmd);
-	}
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/07 13:28:58 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/07 19:00:35 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	execute(t_cmd *cmd, t_shell *shell)
 		pid = fork();
 		if (pid == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			make_redirections(cmd->redirs);
 			cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
 			if (!cmd_path)
@@ -63,7 +65,10 @@ void	execute(t_cmd *cmd, t_shell *shell)
 			error_execve_cmd(cmd_path, cmd->cmd_and_args);
 		}
 		waitpid(pid, &status, 0);
-		shell->last_exit = WEXITSTATUS(status);
+		if (WIFEXITED(status))
+			shell->last_exit = WEXITSTATUS(status);
+		else
+			shell->last_exit = 128 + WTERMSIG(status);
 	}
 }
 

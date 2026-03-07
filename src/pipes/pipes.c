@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 17:20:19 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/07 13:27:39 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/07 18:36:32 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
     p.pids_array[i] = fork();	
 		if (p.pids_array[i] == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			if (p.prev_read_pipe == -1)
 				set_first_child(&p, cmd, shell);
 			else if (cmd->next)
@@ -73,6 +75,9 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 		i++;
 	}
 	waitpid(p.pids_array[i], &p.status, 0);
-	shell->last_exit = WEXITSTATUS(p.status);
+	if (WIFEXITED(p.status))
+		shell->last_exit = WEXITSTATUS(p.status);
+	else
+		shell->last_exit = 128 + WTERMSIG(p.status);
 	free(p.pids_array);
 }

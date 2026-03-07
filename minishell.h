@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/07 13:30:20 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/07 19:03:12 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <limits.h>
 # include "libft/libft.h"
+#include <readline/history.h>
 
 /*
 ce dont j'ai besoin dans la structure pour la partie backend :
@@ -38,10 +40,10 @@ la commmande suivante
 
 typedef enum e_redir_type
 {
-    REDIR_IN,       // vaut 0
-    REDIR_OUT,      // vaut 1
-    REDIR_APPEND,   // vaut 2
-    REDIR_HEREDOC   // vaut 3
+    REDIR_IN,       // vaut 0 <
+    REDIR_OUT,      // vaut 1 >
+    REDIR_APPEND,   // vaut 2 >>
+    REDIR_HEREDOC   // vaut 3 <<
 }   t_redir_type;
 
 
@@ -121,14 +123,19 @@ int	handle_export(char ***envp, char **cmd);
 int	handle_pwd(void);
 int	handle_unset(char ***envp, char *cmd);
 int	handle_cd(char **cmd, char ***envp);
- void	modify_env(char ***envp, char *new_var);
+void	modify_env(char ***envp, char *new_var);
 int		is_bultin(t_cmd *cmd, t_shell *shell);
 //fin fonction builtin
 
 
 //expander
  char    *get_env_value(char **envp, char *name);                                            
-  char    *expand_string(char *str, t_shell *shell);
-  void    expand_cmd(t_cmd *cmd, t_shell *shell);      
+ char    *expand_string(char *str, t_shell *shell);
+ void    expand_cmd(t_cmd *cmd, t_shell *shell);      
+
+// signals
+extern int g_signal;
+void	signal_handler(int sig);
+
   
 #endif 
