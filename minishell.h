@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/05 14:45:22 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/07 13:30:20 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,10 @@ int	handle_cd(char **cmd, char ***envp);
 int		is_bultin(t_cmd *cmd, t_shell *shell);
 //fin fonction builtin
 
+
+//expander
+ char    *get_env_value(char **envp, char *name);                                            
+  char    *expand_string(char *str, t_shell *shell);
+  void    expand_cmd(t_cmd *cmd, t_shell *shell);      
+  
 #endif 

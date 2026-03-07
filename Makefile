@@ -6,7 +6,7 @@
 #    By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/26 16:01:44 by nehuen            #+#    #+#              #
-#    Updated: 2026/03/04 23:09:55 by nehuen           ###   ########.fr        #
+#    Updated: 2026/03/07 13:31:42 by nehuen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRCS = src/executor/executor.c \
 		 src/pipes/set_childs.c \
 		 src/redirections/heredoc.c \
 		 src/redirections/redirections.c \
+		 src/executor/expander.c \
 		 main.c \
 		 
 		 

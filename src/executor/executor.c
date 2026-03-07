@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/05 14:44:53 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/07 13:28:58 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	execute(t_cmd *cmd, t_shell *shell)
 	int		status;
 	char *cmd_path;
 	
+	expand_cmd(cmd, shell);
 	process_heredocs(cmd);
 	if (!cmd->next && is_bultin(cmd, shell))
 		return ;
