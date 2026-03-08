@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -I. -Wall -Wextra -Werror
+CFLAGS = -I. -Wall -Wextra -Werror -I/opt/homebrew/opt/readline/include
 
 LIBFT = ./libft/libft.a
 
@@ -35,6 +35,7 @@ SRCS = main.c \
 	src/redirections/heredoc.c \
 	src/redirections/redirections.c \
 	src/signals.c \
+	src/parsing/char.c \
 	src/parsing/build.c \
 	src/parsing/free.c \
 	src/parsing/missing.c \
@@ -51,7 +52,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) -lreadline
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) -L/opt/homebrew/opt/readline/lib -lreadline
 
 $(LIBFT):
 	make -C ./libft

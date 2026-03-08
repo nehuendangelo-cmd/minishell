@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*ft_get_env_value(char **envp, char *name)
+char	*get_env_value(char **envp, char *name)
 {
 	int		i;
 

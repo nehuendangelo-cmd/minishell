@@ -44,7 +44,6 @@ void	execute(t_cmd *cmd, t_shell *shell)
 	int		status;
 	char *cmd_path;
 	
-	expand_cmd(cmd, shell);
 	process_heredocs(cmd);
 	if (!cmd->next && is_bultin(cmd, shell))
 		return ;

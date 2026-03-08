@@ -1,16 +1,15 @@
 #include "minishell.h"
 
- static t_redir_type token_to_redir(int token_type)
-  {
-    if (token_type == TOK_REDIR_IN)
-        return (REDIR_IN);
-    else if (token_type == TOK_REDIR_OUT)
-        return (REDIR_OUT);
-    else if (token_type == TOK_APPEND)     
-        return (REDIR_APPEND);
-    else if(token_type == TOK_HEREDOC)
-        return (REDIR_HEREDOC); 
-  }
+static t_redir_type	token_to_redir(int token_type)
+{
+	if (token_type == TOK_REDIR_IN)
+		return (REDIR_IN);
+	else if (token_type == TOK_REDIR_OUT)
+		return (REDIR_OUT);
+	else if (token_type == TOK_APPEND)
+		return (REDIR_APPEND);
+	return (REDIR_HEREDOC);
+}
 t_cmd *new_cmd(void)
 {
     t_cmd *cmd;
@@ -86,8 +85,7 @@ t_cmd *ft_build_command(t_token *tokens)
         {
             if (!tokens->next || tokens->next->type != WORD)
                 return (error("missing filename"));
-            token->type = token_to_redir(token->type);
-            ft_add_redir(current, tokens->type, tokens->next->value);
+            ft_add_redir(current, token_to_redir(tokens->type), tokens->next->value);
             tokens = tokens->next; 
         }
         else if (tokens->type == PIPE)
