@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/08 15:45:25 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/08 18:06:13 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char **ft_copy_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		new_envp[i] = envp[i];
+		new_envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
 	new_envp[i] = NULL;
@@ -55,6 +55,11 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("minishell$");
 		if (!line)
 			break ;
+		if (g_signal == SIGINT)
+		{
+			shell.last_exit = 130;
+			g_signal = 0;
+		}
 		if (line[0] == '\0')                                                  
 		{               
 			free(line);                                                       
