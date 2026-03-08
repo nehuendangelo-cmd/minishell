@@ -6,13 +6,13 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 16:19:57 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/08 11:40:36 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/08 11:55:24 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env_value(char **envp, char *name)
+char	*ft_get_env_value(char **envp, char *name)
 {
 	int		i;
 

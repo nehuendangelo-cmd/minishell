@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/07 19:03:12 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/03/08 11:55:10 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,7 @@ int		is_bultin(t_cmd *cmd, t_shell *shell);
 
 
 //expander
- char    *get_env_value(char **envp, char *name);                                            
- char    *expand_string(char *str, t_shell *shell);
- void    expand_cmd(t_cmd *cmd, t_shell *shell);      
+ char    *ft_get_env_value(char **envp, char *name);                                               
 
 // signals
 extern int g_signal;
