@@ -6,10 +6,10 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/02/24 15:39:32 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/08 13:02:59 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef MINISHELL_H
+
 #define MINISHELL_H
 
 #include <unistd.h>
@@ -27,10 +27,10 @@ typedef enum e_token_type
 {
     WORD,
     PIPE,
-    REDIR_IN,
-    REDIR_OUT,
-    HEREDOC,
-    APPEND,
+    TOK_REDIR_IN,
+    TOK_REDIR_OUT,
+    TOK_HEREDOC,
+    TOK_APPEND,
     SINGLE_QUOTE,
     DUBBLE_QUOTE,
     NO_QUOTE
@@ -38,8 +38,10 @@ typedef enum e_token_type
 
 typedef enum e_redir_type
 {
-    REDIR_APPEND_TYPE,
-    REDIR_HEREDOC_TYPE
+    REDIR_IN,
+    REDIR_OUT,
+    REDIR_APPEND,
+    REDIR_HEREDOC
 }   t_redir_type;
 
 typedef struct s_token
@@ -66,19 +68,7 @@ typedef struct s_cmd
 	struct s_cmd *next;
 }	t_cmd;
 
-typedef struct s_env
-{
-    char            *name;
-    char            *value;
-    struct s_env    *next;
-}   t_env;
 
-typedef struct s_dir
-{
-    char            *name;
-    char            *value;
-    struct s_dir    *next;
-}   t_dir;
 
 // char.c
 int ft_skip_quote(char *str, int i);
@@ -130,14 +120,14 @@ void free_redirs(t_redir *redir);
 // utils.c
 int is_redirection(int type);
 int is_redirection_prev(t_token *token);
-char *expand_variable(char *str, int *i, t_env *env, int last_status);
-char *ft_expand_word(char *str, t_env *env, int last_status);
-char *ft_get_env_value(t_env *env, char *name);
+char *expand_variable(char *str, int *i, char **envp, int last_status);
+char *ft_expand_word(char *str, char **envp, int last_status);
+char *ft_get_env_value(char **envp, char *name);
 char *ft_strjoin_free(char *s1, char *s2);
 char *ft_charjoin(char *s, char c);
 char *ft_strcpy(char *dest, const char *src);
 
 // tok2.c
-void ft_expand_tokens(t_token *tokens, t_env *env, int last_status);
+void ft_expand_tokens(t_token *tokens, char **envp, int last_status);
 
 #endif

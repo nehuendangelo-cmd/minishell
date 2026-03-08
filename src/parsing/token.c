@@ -1,4 +1,4 @@
-#include "minishell.h"
+TOK_#include "minishell.h"
 
 void ft_add_op_token(t_token **head, char *line, int *i)
 {
@@ -20,13 +20,13 @@ void ft_add_double_op_token(t_token **head, char *line, int *i)
 
     if (line[*i] == '<' && line[*i + 1] == '<')
     {
-        token->type = HEREDOC;
+        token->type = TOK_HEREDOC;
         token->value = ft_strdup("<<");
         *i += 2;
     }
     else if (line[*i] == '>' && line[*i + 1] == '>')
     {
-        token->type = APPEND;
+        token->type = TOK_APPEND;
         token->value = ft_strdup(">>");
         *i += 2;
     }
@@ -60,9 +60,9 @@ void ft_add_single_op_token(t_token **head, char *line, int *i)
     if (c == '|')
         token->type = PIPE;
     else if (c == '<')
-        token->type = REDIR_IN;
+        token->type = TOK_REDIR_IN;
     else if (c == '>')
-        token->type = REDIR_OUT;
+        token->type = TOK_REDIR_OUT;
 
     token->value = malloc(2);
     token->value[0] = c;

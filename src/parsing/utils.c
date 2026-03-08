@@ -2,15 +2,17 @@
 
 int is_redirection(int type)
 {
-    if (type == REDIR_IN
-        || type == REDIR_OUT
-        || type == APPEND
-        || type == HEREDOC)
+    if (type == TOK_REDIR_IN
+        || type == TOK_REDIR_OUT
+        || type == TOK_APPEND
+        || type == TOK_HEREDOC)
         return (1);
     return (0);
 }
-
-char *expand_variable(char *str, int *i, t_env *env, int last_status)
+//avant : t_env *env, 
+//apres : char **envp
+//cela me permet de recuperer envp en tableau de char pour execve
+char *expand_variable(char *str, int *i, char **envp, int last_status)
 {
     char *tmp;
     char *var;
@@ -27,11 +29,11 @@ char *expand_variable(char *str, int *i, t_env *env, int last_status)
     while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
         (*i)++;
     var = ft_substr(str, start, *i - start);
-    tmp = ft_get_env_value(env, var);
+    tmp = ft_get_env_value(envp, var);
     free(var);
     return (tmp ? ft_strdup(tmp) : ft_strdup(""));
 }
-char *ft_expand_word(char *str, t_env *env, int last_status)
+char *ft_expand_word(char *str, char **envp, int last_status)
 {
     int i;
     char *res;
@@ -43,7 +45,7 @@ char *ft_expand_word(char *str, t_env *env, int last_status)
     {
         if (str[i] == '$')
         {
-            tmp = expand_variable(str, &i, env, last_status);
+            tmp = expand_variable(str, &i, envp, last_status);
             res = ft_strjoin_free(res, tmp);
             free(tmp);
         }
@@ -52,18 +54,22 @@ char *ft_expand_word(char *str, t_env *env, int last_status)
     }
     return res;
 }
-
-
-char *ft_get_env_value(t_env *env, char *name)
+// fonction get_env_value qui parcourt envp en mode tableau
+// recupere la valeur de la variable 
+char    *ft_get_env_value(char **envp, char *name)
 {
-    while (env)
+
+    int        i;
+
+    i = 0;
+    while (envp[i])
     {
-        if (ft_strncmp(env->name, name, ft_strlen(name)) == 0 
-            && env->name[ft_strlen(name)] == '\0')
-            return env->value;
-        env = env->next;
+        if (envp[i] && ft_strncmp(name, envp[i], ft_strlen(name)) == 0
+                && envp[i][ft_strlen(name)] == '=')
+            return (&envp[i][ft_strlen(name) + 1]);
+        i++;
     }
-    return NULL;
+    return (NULL);
 }
 char *ft_strjoin_free(char *s1, char *s2)
 {
@@ -88,10 +94,10 @@ int is_redirection_prev(t_token *token)
 {
     if (!token || !token->prev)
         return (0);
-    if (token->prev->type == REDIR_IN
-        || token->prev->type == REDIR_OUT
-        || token->prev->type == APPEND
-        || token->prev->type == HEREDOC)
+    if (token->prev->type == TOK_REDIR_IN
+        || token->prev->type == TOK_REDIR_OUT
+        || token->prev->type == TOK_APPEND
+        || token->prev->type == TOK_HEREDOC)
         return (1);
     return (0);
 }

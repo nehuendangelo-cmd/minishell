@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void ft_expand_tokens(t_token *tokens, t_env *env, int last_status)
+void ft_expand_tokens(t_token *tokens, char **envp, int last_status)
 {
     char *expanded;
 
@@ -8,10 +8,10 @@ void ft_expand_tokens(t_token *tokens, t_env *env, int last_status)
     {
         if (tokens->type == WORD
             && tokens->quote_type != SINGLE_QUOTE
-            && !(tokens->prev && tokens->prev->type == HEREDOC
+            && !(tokens->prev && tokens->prev->type == TOK_HEREDOC
                  && tokens->quote_type == DUBBLE_QUOTE))
         {
-            expanded = ft_expand_word(tokens->value, env, last_status);
+            expanded = ft_expand_word(tokens->value, envp, last_status);
             free(tokens->value);
             tokens->value = expanded;
         }
