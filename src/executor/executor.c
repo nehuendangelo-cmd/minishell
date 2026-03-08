@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/07 19:00:35 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/03/08 15:50:57 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ int		is_bultin(t_cmd *cmd, t_shell *shell)
 }
 void	execute(t_cmd *cmd, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
-	char *cmd_path;
+	pid_t			pid;
+	int				status;
+	char			*cmd_path;
+	struct sigaction	sa;
 	
 	process_heredocs(cmd);
 	if (!cmd->next && is_bultin(cmd, shell))
@@ -54,8 +55,11 @@ void	execute(t_cmd *cmd, t_shell *shell)
 		pid = fork();
 		if (pid == 0)
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
+			sigemptyset(&sa.sa_mask);
+			sa.sa_flags = 0;
+			sa.sa_handler = SIG_DFL;
+			sigaction(SIGINT, &sa, NULL);
+			sigaction(SIGQUIT, &sa, NULL);
 			make_redirections(cmd->redirs);
 			cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
 			if (!cmd_path)
