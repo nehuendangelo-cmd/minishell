@@ -45,7 +45,12 @@ int	handle_cd(char **cmd, char ***envp)
 	if (!path)
 		return (0);
 	old_pwd = getcwd(NULL, 0);
-	chdir(path);
+	if (chdir(path) == -1)
+	{
+		perror("cd");
+		free(old_pwd);
+		return (1);
+	}
 	pwd_buffer = ft_strjoin("OLDPWD=", old_pwd);
 	free(old_pwd);
 	modify_env(envp, pwd_buffer);

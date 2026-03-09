@@ -17,7 +17,9 @@
 
 void	error_cmd_path(char **cmd_args)
 {
-	perror("cmd1 introuvable");
+	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd(cmd_args[0], 2);
+	ft_putendl_fd(": command not found", 2);
 	free_paths(cmd_args);
 	exit(127);
 }

@@ -32,7 +32,8 @@ int	set_child(t_cmd *cmd, char **envp)
 	cmd_path = find_cmdpath(cmd->cmd_and_args[0], envp);
 	if (cmd_path == NULL)                                                                                      
   {                                                                                                          
-      ft_putstr_fd(cmd->cmd_and_args[0], 2);                                                                 
+      ft_putstr_fd("bash: ", 2);
+      ft_putstr_fd(cmd->cmd_and_args[0], 2);
       ft_putendl_fd(": command not found", 2);
       exit(127);
   }

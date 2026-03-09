@@ -67,8 +67,9 @@ static int	check_access_file(char *cmd_path)
 {
 	if (access(cmd_path, F_OK) != 0)
 	{
+		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(cmd_path, 2);
-    ft_putendl_fd(": command not found", 2);
+		ft_putendl_fd(": command not found", 2);
 		exit(127);
 	}
 	if (access(cmd_path, X_OK) != 0)

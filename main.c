@@ -79,6 +79,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		if (appel_parse(line, &cmd, &shell) != 0)
 		{
+			shell.last_exit = 2;
 			free(line);
 			continue ;
 		}

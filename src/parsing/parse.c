@@ -24,16 +24,17 @@ t_token *parse_principal(char *line)
 
 int	parse_precheck(char *line)
 {
-    if (!ft_check_quote(line, NULL))
-    {
-        error("quote not closed");
-        return (1);
-    }
-    if (!ft_syntax_error(line))
-    {
-        error("syntax error");
-        return (1);
-    }
+    int	res;
+
+    res = ft_check_debut_fin(line);
+    if (res == 0)
+        return (error("syntax error near unexpected token `|'"), 1);
+    if (res == -1)
+        return (error("syntax error: unexpected end of file"), 1);
+    if (!ft_check_pipe(line))
+        return (error("syntax error near unexpected token `|'"), 1);
+    if (!ft_check_redirection(line))
+        return (error("syntax error near unexpected token `newline'"), 1);
     return (0);
 }
 

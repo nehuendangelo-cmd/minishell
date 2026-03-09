@@ -1,27 +1,27 @@
 #include "minishell.h"
 
+// retourne 0 si | en debut (token inattendu), -1 si | en fin (end of file), 1 si ok
 int ft_check_debut_fin(char *line)
 {
-    int i = 0;
+    int i;
+    int j;
 
+    i = 0;
     if (!line || !line[0])
-        return 0; 
+        return (0);
     while (line[i] && (line[i] == ' ' || line[i] == '\t'))
         i++;
-
     if (line[i] == '|')
-        return 0; 
-    int j = 0;
+        return (0);
+    j = 0;
     while (line[j])
         j++;
     j--;
     while (j >= 0 && (line[j] == ' ' || line[j] == '\t'))
         j--;
-
     if (j >= 0 && line[j] == '|')
-        return 0; 
-
-    return 1; 
+        return (-1);
+    return (1);
 }
 
 int ft_check_pipe(char *line)
@@ -68,11 +68,11 @@ int ft_check_redirection(char *line)
 
 int ft_syntax_error(char *line)
 {
-    if (!ft_check_debut_fin(line))
-        return 0;
+    if (ft_check_debut_fin(line) <= 0)
+        return (0);
     if (!ft_check_redirection(line))
-        return 0;
-    if(!ft_check_pipe(line))
-        return 0;
-    return 1; // syntaxe ok
+        return (0);
+    if (!ft_check_pipe(line))
+        return (0);
+    return (1);
 }
