@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 23:05:40 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/09 16:07:13 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/09 16:11:24 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,46 @@ void	process_heredocs(t_cmd *cmd)
 	}
 }
 
+
 void	handle_heredoc(t_redir *redir)
 {
 	char *line;
-	struct sigaction sa;
+	int		pid;
+	struct sigaction	sa;
+	int status;
 	
 	pipe(redir->pipe_fd);
-	while (1)
+	pid = fork();
+	if (pid == 0)	
 	{
-		line = readline("heredoc >");
-		if (line == NULL)
+		sigemptyset(&sa.sa_mask);
+		sa.sa_flags = 0;
+		sa.sa_handler = SIG_DFL;
+		sigaction(SIGINT, &sa, NULL);
+		sigaction(SIGQUIT, &sa, NULL);
+		while (1)
 		{
-			close(redir->pipe_fd[1]);
-			exit(0);
-		}
-		if (ft_strncmp(redir->file, line, ft_strlen(redir->file)) == 0)
-		{
+			line = readline("heredoc >");
+			if (line == NULL)
+			{
+				close(redir->pipe_fd[1]);
+				exit(0);
+			}
+			if (ft_strncmp(redir->file, line, ft_strlen(redir->file)) == 0)
+			{
+				free(line);
+				close(redir->pipe_fd[1]);
+				exit(0);
+			}
+			write(redir->pipe_fd[1], line, ft_strlen(line));
 			free(line);
-			close(redir->pipe_fd[1]);
-			exit(0);
+			write(redir->pipe_fd[1], "\n", 1);
 		}
-		write(redir->pipe_fd[1], line, ft_strlen(line));
-		free(line);
-		write(redir->pipe_fd[1], "\n", 1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		close(redir->pipe_fd[1]);
 	}
 }
+
