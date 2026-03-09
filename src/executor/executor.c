@@ -100,9 +100,9 @@ int		is_bultin(t_cmd *cmd, t_shell *shell)
 }
 void	execute(t_cmd *cmd, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
-	char *cmd_path;
+	pid_t			pid;
+	int				status;
+	char			*cmd_path;
 	struct sigaction	sa;
 	process_heredocs(cmd);
 	

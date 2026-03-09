@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 23:05:40 by nehuen            #+#    #+#             */
 /*   Updated: 2026/03/09 16:11:24 by nehuen           ###   ########.fr       */

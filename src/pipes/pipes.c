@@ -38,9 +38,9 @@ void    init_pipes(t_pipe *p, t_cmd *cmd)
 
 void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 {
-	int		i;
-	t_pipe	p;
-	struct sigaction sa;
+	int				i;
+	t_pipe			p;
+	struct sigaction	sa;
 	init_pipes(&p, cmd);
 	i = 0;
 	while (cmd)
