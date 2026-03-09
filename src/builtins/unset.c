@@ -19,6 +19,8 @@ int	handle_unset(char ***envp, char *cmd)
 	int			to_delete;
 	int			j;
 
+	if (!cmd)
+		return (0);
 	j = 0;
 	i = 0;
 	to_delete = -1;
