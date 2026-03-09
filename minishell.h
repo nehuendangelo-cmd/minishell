@@ -116,6 +116,11 @@ void	ft_add_word_token(t_token **head, char *line, int *i);
 void	ft_add_word_quote_token(t_token **head, char *line, int *i);
 
 t_token	*parse_principal(char *line);
+int	appel_parse(char *line, t_cmd **cmd);
+int	parse_precheck(char *line);
+int	parse_tokenize(char *line, t_token **tokens);
+int	parse_build_cmds(t_token *tokens, t_cmd **cmd);
+
 
 t_cmd	*new_cmd(void);
 void	ft_add_arg(t_cmd *cmd, char *word);

@@ -36,6 +36,7 @@ static char **ft_copy_env(char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
+	t_cmd		*cmd;
 	char		*line;
 	
 	;
@@ -48,6 +49,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)shell;
 	while (1)
 	{
+		cmd = NULL;
 		line = readline("minishell$");
 		if (!line)
 			break ;
@@ -57,8 +59,13 @@ int	main(int argc, char **argv, char **envp)
 			continue ;                                                        
 		}
 		add_history(line);
-		//parse(line, cmd);
+		if (appel_parse(line, &cmd) != 0)
+		{
+			free(line);
+			continue ;
+		}
 		//execute(cmd, shell);
+		free_cmds(cmd);
 		free(line);
 	}
 }
