@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 19:46:20 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 19:15:51 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/09 18:47:28 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,26 @@ static void	modify_env_without_equal(char ***envp, char *new_var)
 	}
 	add_var(envp, new_var, i);
 }
+static int	is_valid_var_name(char *cmd)
+{
+	int		i;
+
+	i = 0;
+	if (!cmd)
+		return (0);
+	if (ft_isalpha(cmd[0]) || cmd[0] == '_')
+	{
+		while (cmd[i] && cmd[i] != '=')
+		{
+			if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
+				return (0);
+			i++;
+		}
+	}
+	else
+		return (0);
+	return (1);
+}
 int	handle_export(char ***envp, char **cmd)
 {
 	int		i;
@@ -120,6 +140,13 @@ int	handle_export(char ***envp, char **cmd)
 	else
 	while (cmd[i])
 	{
+		if (!is_valid_var_name(cmd[i]))
+		{
+			ft_putstr_fd("bash: export: ", 2);
+ 			ft_putstr_fd(cmd[i], 2);
+ 			ft_putendl_fd(": not a valid identifier", 2);
+			return (1);
+		}
 		modify_env(envp, cmd[i]);
 		i++;
 	}
