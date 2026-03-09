@@ -48,6 +48,9 @@ SRCS = main.c \
 	src/parsing/utils.c
 
 OBJS = $(SRCS:.c=.o)
+VALGRIND = valgrind
+VG_FLAGS = --leak-check=full --show-leak-kinds=definite --track-origins=yes --show-reachable=no
+
 
 all: $(NAME)
 
@@ -67,4 +70,14 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+valgrind: $(NAME)
+	$(VALGRIND) $(VG_FLAGS) ./$(NAME)
+
+valgrind_clean: $(NAME)
+	$(VALGRIND) $(VG_FLAGS) ./$(NAME) 2>&1 | grep -v "still reachable"
+
+.PHONY: all clean fclean re valgrind valgrind_clean
+
+
+
+

@@ -23,10 +23,21 @@ static char **ft_copy_env(char **envp)
 	while (envp[i])
 		i++;
 	new_envp = malloc(sizeof(char *) * (i + 1));
+	if (!new_envp)
+		return (NULL);
 	i = 0;
 	while (envp[i])
 	{
-		new_envp[i] = envp[i];
+		/* ancien code: new_envp[i] = envp[i];
+		 * problème: copie trop legere , puis free() sur pointeurs non alloués par nous. */
+		new_envp[i] = ft_strdup(envp[i]);
+		if (!new_envp[i])
+		{
+			while (--i >= 0)
+				free(new_envp[i]);
+			free(new_envp);
+			return (NULL);
+		}
 		i++;
 	}
 	new_envp[i] = NULL;
@@ -38,15 +49,12 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 	t_cmd		*cmd;
 	char		*line;
-	
-	;
 	(void)argc;
 	(void)argv;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	shell.envp = ft_copy_env(envp);
 	shell.last_exit = 0;
-	(void)shell;
 	while (1)
 	{
 		cmd = NULL;
@@ -59,12 +67,13 @@ int	main(int argc, char **argv, char **envp)
 			continue ;                                                        
 		}
 		add_history(line);
-		if (appel_parse(line, &cmd) != 0)
+		if (appel_parse(line, &cmd, &shell) != 0)
 		{
 			free(line);
 			continue ;
 		}
-		//execute(cmd, shell);
+		if (cmd && cmd->cmd_and_args)
+			execute(cmd, &shell);
 		free_cmds(cmd);
 		free(line);
 	}

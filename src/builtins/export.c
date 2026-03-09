@@ -55,7 +55,14 @@ static void	add_var(char ***envp, char *new_var, int size_envp)
 		new_envp[i] = (*envp)[i];
 		i++;
 	}
-	new_envp[i] = new_var;
+	/* ancien code: new_envp[i] = new_var;
+	 * problème: new_var pointe vers cmd[i], libéré après la commande. */
+	new_envp[i] = ft_strdup(new_var);
+	if (!new_envp[i])
+	{
+		free(new_envp);
+		return ;
+	}
 	new_envp[i + 1] = NULL;
 	free(*envp);
 	*envp = new_envp;
@@ -88,7 +95,15 @@ static void	modify_env_without_equal(char ***envp, char *new_var)
 	{
 		if (ft_strncmp(new_var, (*envp)[i], (eq - new_var + 1)) == 0)
 		{
-			(*envp)[i] = new_var;
+			char	*dup_var;
+
+			/* ancien code: (*envp)[i] = new_var;
+			 * problème: pointeur temporaire venant de cmd. */
+			dup_var = ft_strdup(new_var);
+			if (!dup_var)
+				return ;
+			free((*envp)[i]);
+			(*envp)[i] = dup_var;
 			return ;
 		}
 		i++;	

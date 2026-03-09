@@ -14,7 +14,7 @@ t_token *parse_principal(char *line)
         }
         if (ft_is_op(line[i]))
             ft_add_op_token(&token, line, &i);
-        else if (ft_check_quote(line,&i))
+        else if (line[i] == '\'' || line[i] == '"')
             ft_add_word_quote_token(&token, line, &i);
         else
             ft_add_word_token(&token, line, &i);
@@ -56,7 +56,7 @@ int	parse_build_cmds(t_token *tokens, t_cmd **cmd)
     return (0);
 }
 
-int appel_parse(char *line, t_cmd **cmd)
+int appel_parse(char *line, t_cmd **cmd, t_shell *shell)
 {
     t_token	*tokens;
 
@@ -69,6 +69,8 @@ int appel_parse(char *line, t_cmd **cmd)
         return (1);
     if (parse_tokenize(line, &tokens))
         return (1);
+    if (shell)
+        ft_expand_tokens(tokens, shell->envp, shell->last_exit);
     if (parse_build_cmds(tokens, cmd))
         return (free_tokens(tokens), 1);
     free_tokens(tokens);
