@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/08 00:00:00 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/09 15:39:13 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <signal.h>
 # include "libft/libft.h"
 
 // token types pour le parsing

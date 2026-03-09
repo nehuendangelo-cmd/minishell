@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 17:20:19 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/07 18:36:32 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/03/09 15:50:05 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 {
 	int		i;
 	t_pipe	p;
-
+	struct sigaction sa;
 	init_pipes(&p, cmd);
 	i = 0;
 	while (cmd)
@@ -50,8 +50,11 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
     p.pids_array[i] = fork();	
 		if (p.pids_array[i] == 0)
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
+			sigemptyset(&sa.sa_mask);
+			sa.sa_flags = 0;
+			sa.sa_handler = SIG_DFL; //remet les comportements par defaut
+			sigaction(SIGINT, &sa, NULL); // pour sigint
+			sigaction(SIGQUIT, &sa, NULL); // pour sigquit
 			if (p.prev_read_pipe == -1)
 				set_first_child(&p, cmd, shell);
 			else if (cmd->next)

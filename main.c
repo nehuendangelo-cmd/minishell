@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/07 20:34:04 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/03/09 15:38:35 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 	t_cmd		*cmd;
 	char		*line;
+	struct  sigaction sa;
+	sa.sa_handler = signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 	(void)argc;
 	(void)argv;
 	signal(SIGINT, signal_handler);
@@ -61,6 +66,11 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("minishell$");
 		if (!line)
 			break ;
+		if (g_signal == SIGINT)
+		{
+			shell.last_exit = 130;
+			g_signal = 0;
+		}
 		if (line[0] == '\0')                                                  
 		{               
 			free(line);                                                       

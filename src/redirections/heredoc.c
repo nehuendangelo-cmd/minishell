@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 23:05:40 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/04 14:47:56 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/09 15:55:49 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,16 @@ void	handle_heredoc(t_redir *redir)
 	while (1)
 	{
 		line = readline("heredoc >");
+		if (line == NULL)
+		{
+			close(redir->pipe_fd[1]);
+			exit(0);
+		}
 		if (ft_strncmp(redir->file, line, ft_strlen(redir->file)) == 0)
 		{
 			free(line);
 			close(redir->pipe_fd[1]);
-			break;
+			exit(0);
 		}
 		write(redir->pipe_fd[1], line, ft_strlen(line));
 		free(line);
