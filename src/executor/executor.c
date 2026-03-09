@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/09 15:44:04 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/09 16:06:18 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	execute(t_cmd *cmd, t_shell *shell)
 		{
 			sigemptyset(&sa.sa_mask);
 			sa.sa_flags = 0;
-			sa.sa_handler = SIG_DFLT;
+			sa.sa_handler = SIG_DFL;
 			sigaction(SIGINT, &sa, NULL);
 			sigaction(SIGQUIT, &sa, NULL);
 			make_redirections(cmd->redirs);

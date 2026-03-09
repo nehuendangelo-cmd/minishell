@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 23:05:40 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/09 15:55:49 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/09 16:07:13 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	process_heredocs(t_cmd *cmd)
 void	handle_heredoc(t_redir *redir)
 {
 	char *line;
+	struct sigaction sa;
 	
 	pipe(redir->pipe_fd);
 	while (1)

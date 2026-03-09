@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/09 15:38:35 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/09 16:05:19 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd		*cmd;
 	char		*line;
 	struct  sigaction sa;
-	sa.sa_handler = signal_handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+	sa.sa_handler = signal_handler; //quand sigaction detecte un signal, appelle signal_handler
+	sigemptyset(&sa.sa_mask); // ne bloque aucun signal
+	sa.sa_flags = 0; // pas de comportemnt special
 	sigaction(SIGINT, &sa, NULL);
 	(void)argc;
 	(void)argv;
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	sa.sa_handler = SIG_IGN; // => ignore le signal
+	sigaction(SIGQUIT, &sa, NULL); // SIGQUIT (ctrl + \) est ingorer 
 	shell.envp = ft_copy_env(envp);
 	shell.last_exit = 0;
 	while (1)
