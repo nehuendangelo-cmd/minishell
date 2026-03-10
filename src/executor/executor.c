@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/10 16:47:42 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/10 18:55:04 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	execute(t_cmd *cmd, t_shell *shell)
 	process_heredocs(cmd);
 	
 	/*  évite crash si parse retourne une commande vide. */
-	if (!cmd->cmd_and_args || !cmd->cmd_and_args[0])
+	if (!cmd->cmd_and_args || !cmd->cmd_and_args[0] || !cmd->cmd_and_args[0][0])
 		return;
 	
 	/* erreur : builtin simple traité ici (avec redirections si besoin)
