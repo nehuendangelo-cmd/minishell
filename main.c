@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/09 16:14:52 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/10 16:41:42 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	sa.sa_handler = SIG_IGN; // => ignore le signal
-	sigaction(SIGQUIT, &sa, NULL); // SIGQUIT (ctrl + \) est ingorer
+	sigaction(SIGQUIT, &sa, NULL); // SIGQUIT (ctrl + \) est ignorer
 	shell.envp = ft_copy_env(envp);
 	shell.last_exit = 0;
 	while (1)

@@ -31,7 +31,10 @@ char *expand_variable(char *str, int *i, char **envp, int last_status)
     var = ft_substr(str, start, *i - start);
     tmp = ft_get_env_value(envp, var);
     free(var);
-    return (tmp ? ft_strdup(tmp) : ft_strdup(""));
+    if (tmp)
+        return (ft_strdup(tmp));
+    else
+        return (ft_strdup(""));
 }
 char *ft_expand_word(char *str, char **envp, int last_status)
 {

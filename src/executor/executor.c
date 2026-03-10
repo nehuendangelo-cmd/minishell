@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/09 16:06:18 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/10 16:47:42 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ void	execute(t_cmd *cmd, t_shell *shell)
 			sa.sa_handler = SIG_DFL;
 			sigaction(SIGINT, &sa, NULL);
 			sigaction(SIGQUIT, &sa, NULL);
-			make_redirections(cmd->redirs);
+			if (make_redirections(cmd->redirs) == -1)                
+      	exit(1);    
 			cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
 			if (!cmd_path)
 				error_cmd_path(cmd->cmd_and_args);
