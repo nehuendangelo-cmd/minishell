@@ -20,7 +20,7 @@ char	*get_env_value(char **envp, char *name)
 	while (envp[i])
 	{
 		if (envp[i] && ft_strncmp(name, envp[i], ft_strlen(name)) == 0
-				&& envp[i][ft_strlen(name)] == '=')
+			&& envp[i][ft_strlen(name)] == '=')
 			return (&envp[i][ft_strlen(name) + 1]);
 		i++;
 	}

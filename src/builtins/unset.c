@@ -16,28 +16,29 @@ static char	**make_new_envp(int size, int to_delete, char ***envp)
 {
 	int		i;
 	int		j;
-	char 	**new_envp;
-	
+	char	**new_envp;
+
 	i = 0;
 	j = 0;
 	new_envp = malloc(sizeof(char *) * (size));
 	if (!new_envp)
 		return (NULL);
 	while ((*envp)[i])
-  {
-      if (i != to_delete)
-          new_envp[j++] = (*envp)[i];
-      i++;
-  }
+	{
+		if (i != to_delete)
+			new_envp[j++] = (*envp)[i];
+		i++;
+	}
 	new_envp[j] = NULL;
 	free(*envp);
 	return (new_envp);
 }
+
 int	handle_unset(char ***envp, char *cmd)
 {
-		int		i;
-	char 		**new_envp;
-	int			to_delete;
+	int		i;
+	char	**new_envp;
+	int		to_delete;
 
 	if (!cmd)
 		return (0);
@@ -45,13 +46,13 @@ int	handle_unset(char ***envp, char *cmd)
 	to_delete = -1;
 	while ((*envp)[i])
 	{
-		if (ft_strncmp(cmd, (*envp)[i], (ft_strlen(cmd))) == 0 
-		&& (*envp)[i][ft_strlen(cmd)] == '=')
+		if (ft_strncmp(cmd, (*envp)[i], (ft_strlen(cmd))) == 0
+			&& (*envp)[i][ft_strlen(cmd)] == '=')
 			to_delete = i;
-		i++;	
+		i++;
 	}
-	if (to_delete == -1)                                                                                                       
-      return (0);   
+	if (to_delete == -1)
+		return (0);
 	new_envp = make_new_envp(i + 1, to_delete, envp);
 	*envp = new_envp;
 	return (0);

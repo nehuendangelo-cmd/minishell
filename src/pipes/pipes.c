@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		ft_cmd_count(t_cmd *cmd)
+int	ft_cmd_count(t_cmd *cmd)
 {
 	t_cmd	*count;
 	int		i;
@@ -26,7 +26,8 @@ int		ft_cmd_count(t_cmd *cmd)
 	}
 	return (i);
 }
-void    init_pipes(t_pipe *p, t_cmd *cmd) 
+
+void	init_pipes(t_pipe *p, t_cmd *cmd)
 {
 	p->nb_pids = ft_cmd_count(cmd);
 	p->prev_read_pipe = -1;
@@ -41,20 +42,21 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 	int				i;
 	t_pipe			p;
 	struct sigaction	sa;
+
 	init_pipes(&p, cmd);
 	i = 0;
 	while (cmd)
 	{
 		if (cmd->next)
-        pipe(p.pipe_fd);
-    p.pids_array[i] = fork();	
+			pipe(p.pipe_fd);
+		p.pids_array[i] = fork();
 		if (p.pids_array[i] == 0)
 		{
 			sigemptyset(&sa.sa_mask);
 			sa.sa_flags = 0;
-			sa.sa_handler = SIG_DFL; //remet les comportements par defaut
-			sigaction(SIGINT, &sa, NULL); // pour sigint
-			sigaction(SIGQUIT, &sa, NULL); // pour sigquit
+			sa.sa_handler = SIG_DFL;
+			sigaction(SIGINT, &sa, NULL);
+			sigaction(SIGQUIT, &sa, NULL);
 			if (p.prev_read_pipe == -1)
 				set_first_child(&p, cmd, shell);
 			else if (cmd->next)
@@ -62,7 +64,7 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 			else
 				set_last_child(&p, cmd, shell);
 		}
-		if(cmd->next)
+		if (cmd->next)
 			close(p.pipe_fd[1]);
 		if (p.prev_read_pipe != -1)
 			close(p.prev_read_pipe);

@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 15:14:34 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/02 16:43:32 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/11 17:08:20 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ int	is_valid_n_flag(char *cmd)
 			y++;
 		if (cmd[y])
 			return (0);
-		else 
+		else
 			return (1);
 	}
 	else
 		return (0);
 }
+
 int	handle_echo(char **cmd)
 {
 	int		i;
@@ -45,7 +46,7 @@ int	handle_echo(char **cmd)
 			i++;
 		}
 		else
-			break;
+			break ;
 	}
 	while (cmd[i])
 	{

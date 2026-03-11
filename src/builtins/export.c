@@ -12,13 +12,11 @@
 
 #include "minishell.h"
 
-
-
 void	add_var(char ***envp, char *new_var, int size_envp)
 {
 	int		i;
 	char	**new_envp;
-	
+
 	new_envp = malloc(sizeof(char *) * (size_envp + 2));
 	if (!new_envp)
 		return ;
@@ -28,8 +26,6 @@ void	add_var(char ***envp, char *new_var, int size_envp)
 		new_envp[i] = (*envp)[i];
 		i++;
 	}
-	/* ancien code: new_envp[i] = new_var;
-	 * problème: new_var pointe vers cmd[i], libéré après la commande. */
 	new_envp[i] = ft_strdup(new_var);
 	if (!new_envp[i])
 	{
@@ -40,6 +36,7 @@ void	add_var(char ***envp, char *new_var, int size_envp)
 	free(*envp);
 	*envp = new_envp;
 }
+
 void	modify_env_without_equal(char ***envp, char *new_var)
 {
 	int		i;
@@ -49,18 +46,20 @@ void	modify_env_without_equal(char ***envp, char *new_var)
 	{
 		if (ft_strncmp(new_var, (*envp)[i], (ft_strlen(new_var))) == 0
 			&& ((*envp)[i][ft_strlen(new_var)] == '='
-			 || (*envp)[i][ft_strlen(new_var)] == '\0'))
-				return ;
-		i++;	
+			|| (*envp)[i][ft_strlen(new_var)] == '\0'))
+			return ;
+		i++;
 	}
 	add_var(envp, new_var, i);
 }
- void	modify_env(char ***envp, char *new_var)
+
+void	modify_env(char ***envp, char *new_var)
 {
 	int		i;
-	char *eq;
-	
-  eq = ft_strchr(new_var, '=');
+	char	*eq;
+	char	*dup_var;
+
+	eq = ft_strchr(new_var, '=');
 	if (!eq)
 		return (modify_env_without_equal(envp, new_var));
 	i = 0;
@@ -68,10 +67,6 @@ void	modify_env_without_equal(char ***envp, char *new_var)
 	{
 		if (ft_strncmp(new_var, (*envp)[i], (eq - new_var + 1)) == 0)
 		{
-			char	*dup_var;
-
-			/* ancien code: (*envp)[i] = new_var;
-			 * problème: pointeur temporaire venant de cmd. */
 			dup_var = ft_strdup(new_var);
 			if (!dup_var)
 				return ;
@@ -79,10 +74,11 @@ void	modify_env_without_equal(char ***envp, char *new_var)
 			(*envp)[i] = dup_var;
 			return ;
 		}
-		i++;	
+		i++;
 	}
 	add_var(envp, new_var, i);
 }
+
 int	is_valid_var_name(char *cmd)
 {
 	int		i;
@@ -103,6 +99,7 @@ int	is_valid_var_name(char *cmd)
 		return (0);
 	return (1);
 }
+
 int	handle_export(char ***envp, char **cmd)
 {
 	int		i;
@@ -111,19 +108,17 @@ int	handle_export(char ***envp, char **cmd)
 	if (!cmd[1])
 		print_export_env(*envp);
 	else
-	while (cmd[i])
-	{
-		if (!is_valid_var_name(cmd[i]))
+		while (cmd[i])
 		{
-			ft_putstr_fd("bash: export: ", 2);
- 			ft_putstr_fd(cmd[i], 2);
- 			ft_putendl_fd(": not a valid identifier", 2);
-			return (1);
+			if (!is_valid_var_name(cmd[i]))
+			{
+				ft_putstr_fd("bash: export: ", 2);
+				ft_putstr_fd(cmd[i], 2);
+				ft_putendl_fd(": not a valid identifier", 2);
+				return (1);
+			}
+			modify_env(envp, cmd[i]);
+			i++;
 		}
-		modify_env(envp, cmd[i]);
-		i++;
-	}
 	return (0);
 }
-
-

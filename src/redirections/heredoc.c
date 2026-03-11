@@ -14,7 +14,7 @@
 
 void	process_heredocs(t_cmd *cmd)
 {
-	t_redir *redir;
+	t_redir	*redir;
 
 	while (cmd)
 	{
@@ -29,17 +29,16 @@ void	process_heredocs(t_cmd *cmd)
 	}
 }
 
-
 void	handle_heredoc(t_redir *redir)
 {
-	char *line;
-	int		pid;
+	char			*line;
+	int				pid;
 	struct sigaction	sa;
-	int status;
-	
+	int				status;
+
 	pipe(redir->pipe_fd);
 	pid = fork();
-	if (pid == 0)	
+	if (pid == 0)
 	{
 		sigemptyset(&sa.sa_mask);
 		sa.sa_flags = 0;
@@ -71,4 +70,3 @@ void	handle_heredoc(t_redir *redir)
 		close(redir->pipe_fd[1]);
 	}
 }
-

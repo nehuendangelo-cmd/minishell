@@ -17,7 +17,7 @@ static int	check_access_file(char *cmd_path);
 void	free_paths(char **paths)
 {
 	int		i;
-	
+
 	if (!paths)
 		return ;
 	i = 0;
@@ -28,12 +28,13 @@ void	free_paths(char **paths)
 	}
 	free(paths);
 }
+
 char	**find_path_env(char **envp)
 {
 	int		i;
 	char	**paths;
 
-	if (!envp ||!envp[0])
+	if (!envp || !envp[0])
 		return (NULL);
 	i = 0;
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
@@ -50,7 +51,7 @@ char	*make_valid_cmd_path(char *paths, char *cmd)
 {
 	char	*tmp;
 	char	*full_path;
-	
+
 	tmp = ft_strjoin(paths, "/");
 	if (!tmp)
 		return (NULL);
@@ -63,6 +64,7 @@ char	*make_valid_cmd_path(char *paths, char *cmd)
 	free(full_path);
 	return (NULL);
 }
+
 static int	check_access_file(char *cmd_path)
 {
 	if (access(cmd_path, F_OK) != 0)
@@ -75,11 +77,12 @@ static int	check_access_file(char *cmd_path)
 	if (access(cmd_path, X_OK) != 0)
 	{
 		ft_putstr_fd(cmd_path, 2);
- 		ft_putendl_fd(": permission denied", 2);
+		ft_putendl_fd(": permission denied", 2);
 		exit(126);
 	}
 	return (0);
 }
+
 char	*find_cmdpath(char *cmd, char **envp)
 {
 	char	**paths;
@@ -105,4 +108,3 @@ char	*find_cmdpath(char *cmd, char **envp)
 	free_paths(paths);
 	return (NULL);
 }
-

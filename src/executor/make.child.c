@@ -26,17 +26,17 @@ int	make_child(pid_t *pid)
 int	set_child(t_cmd *cmd, char **envp)
 {
 	char	*cmd_path;
-	
+
 	if (make_redirections(cmd->redirs) == -1)
 		exit(1);
 	cmd_path = find_cmdpath(cmd->cmd_and_args[0], envp);
-	if (cmd_path == NULL)                                                                                      
-  {                                                                                                          
-      ft_putstr_fd("bash: ", 2);
-      ft_putstr_fd(cmd->cmd_and_args[0], 2);
-      ft_putendl_fd(": command not found", 2);
-      exit(127);
-  }
+	if (cmd_path == NULL)
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd->cmd_and_args[0], 2);
+		ft_putendl_fd(": command not found", 2);
+		exit(127);
+	}
 	execve(cmd_path, cmd->cmd_and_args, envp);
 	free(cmd_path);
 	perror(cmd->cmd_and_args[0]);
