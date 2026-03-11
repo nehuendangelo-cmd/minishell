@@ -6,7 +6,7 @@
 #    By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/26 16:01:44 by nehuen            #+#    #+#              #
-#    Updated: 2026/03/08 00:00:00 by nehuen           ###   ########.fr        #
+#    Updated: 2026/03/11 16:14:23 by nehuen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS = main.c \
 	src/builtins/env.c \
 	src/builtins/exit.c \
 	src/builtins/export.c \
+	src/builtins/export2.c \
 	src/builtins/handle_pwd.c \
 	src/builtins/unset.c \
 	src/pipes/pipes.c \

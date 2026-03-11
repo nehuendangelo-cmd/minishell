@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/10 18:55:04 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/11 16:59:44 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,27 +98,14 @@ int		is_bultin(t_cmd *cmd, t_shell *shell)
 	else
 		return (shell->last_exit = 0, 0);
 }
-void	execute(t_cmd *cmd, t_shell *shell)
+static void execute_single_cmd(t_cmd *cmd, t_shell *shell)
 {
-	pid_t			pid;
-	int				status;
-	char			*cmd_path;
+	int		pid;
 	struct sigaction	sa;
-	process_heredocs(cmd);
+	char			*cmd_path;
+	int				status;
 	
-	/*  évite crash si parse retourne une commande vide. */
-	if (!cmd->cmd_and_args || !cmd->cmd_and_args[0] || !cmd->cmd_and_args[0][0])
-		return;
-	
-	/* erreur : builtin simple traité ici (avec redirections si besoin)
-	 * pour éviter une double exéc. */
-	if (!cmd->next && exec_single_builtin(cmd, shell))
-		return ;
-	if (cmd->next)
-		execute_pipeline(cmd, shell);
-	else
-	{
-		pid = fork();
+	pid = fork();
 		if (pid == 0)
 		{
 			sigemptyset(&sa.sa_mask);
@@ -139,6 +126,21 @@ void	execute(t_cmd *cmd, t_shell *shell)
 			shell->last_exit = WEXITSTATUS(status);
 		else
 			shell->last_exit = 128 + WTERMSIG(status);
-	}
+}
+void	execute(t_cmd *cmd, t_shell *shell)
+{	
+	process_heredocs(cmd);
+	/*  évite crash si parse retourne une commande vide. */
+	if (!cmd->cmd_and_args || !cmd->cmd_and_args[0] || !cmd->cmd_and_args[0][0])
+		return;
+	
+	/* erreur : builtin simple traité ici (avec redirections si besoin)
+	 * pour éviter une double exéc. */
+	if (!cmd->next && exec_single_builtin(cmd, shell))
+		return ;
+	if (cmd->next)
+		execute_pipeline(cmd, shell);
+	else
+		execute_single_cmd(cmd, shell);
 }
 

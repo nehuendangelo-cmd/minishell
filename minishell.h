@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/10 17:32:50 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/11 16:13:50 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,11 @@ int		handle_unset(char ***envp, char *cmd);
 int		handle_cd(char **cmd, char ***envp);
 void	modify_env(char ***envp, char *new_var);
 int		is_bultin(t_cmd *cmd, t_shell *shell);
+int		is_valid_var_name(char *cmd);
+void	modify_env(char ***envp, char *new_var);
+void	modify_env_without_equal(char ***envp, char *new_var);
+void	add_var(char ***envp, char *new_var, int size_envp);
+void	print_export_env(char **envp);
 
 char	*get_env_value(char **envp, char *name);
 

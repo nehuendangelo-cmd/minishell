@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 16:50:40 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/01 19:11:49 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/11 16:06:05 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,27 @@ static char	*find_home_env(char **envp, char *path_name)
 		return (NULL);
 	return (paths + ft_strlen(path_name));
 }
-
+static char *find_path(char **cmd, char ***envp)
+{
+	char	*path;
+	
+	if (!cmd[1])
+		path = find_home_env(*envp, "HOME=");
+	else if (cmd[1][0] == '-' && !cmd[1][1])
+		path = find_home_env(*envp, "OLDPWD=");
+	else
+		path = cmd[1];
+	if (!path)
+		return (NULL);
+	return (path);
+}
 int	handle_cd(char **cmd, char ***envp)
 {
 	char	*path;
 	char	*old_pwd;
 	char *pwd_buffer;
 	
-	if (!cmd[1])
-		path = find_home_env(*envp, "HOME=");
-	else if (cmd[1][0] == '-' && !cmd[1][1])
-		path = find_home_env(*envp, "OLDPWD=");
-	else 
-		path =  cmd[1];
+	path = find_path(cmd, envp);
 	if (!path)
 		return (0);
 	old_pwd = getcwd(NULL, 0);

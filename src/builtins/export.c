@@ -6,42 +6,15 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 19:46:20 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/09 18:47:28 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/11 16:15:55 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_export_env(char **envp)
-{
-	int		i;
-	int		y;
-	int		flag;
 
-	i = 0;
-	while (envp[i])
-	{
-		y = 0;
-		flag = 0;
-		ft_putstr_fd("declare -x ", 1);
-		while (envp[i][y])
-		{
-			ft_putchar_fd(envp[i][y], 1);
-			if (envp[i][y] == '=')
-			{
-				ft_putchar_fd('"', 1);
-				flag = 1;
-			}
-			if (!envp[i][y + 1] && flag == 1)
-				ft_putchar_fd('"', 1);
-			y++;
-		}
-		ft_putchar_fd('\n', 1);
-		i++;
-	}
-}
 
-static void	add_var(char ***envp, char *new_var, int size_envp)
+void	add_var(char ***envp, char *new_var, int size_envp)
 {
 	int		i;
 	char	**new_envp;
@@ -67,7 +40,7 @@ static void	add_var(char ***envp, char *new_var, int size_envp)
 	free(*envp);
 	*envp = new_envp;
 }
-static void	modify_env_without_equal(char ***envp, char *new_var)
+void	modify_env_without_equal(char ***envp, char *new_var)
 {
 	int		i;
 
@@ -110,7 +83,7 @@ static void	modify_env_without_equal(char ***envp, char *new_var)
 	}
 	add_var(envp, new_var, i);
 }
-static int	is_valid_var_name(char *cmd)
+int	is_valid_var_name(char *cmd)
 {
 	int		i;
 
