@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/12 20:24:33 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/12 21:07:41 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,13 @@ int	is_bultin(t_cmd *cmd, t_shell *shell)
 static void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 {
 	int					pid;
-	struct sigaction	sa;
 	char				*cmd_path;
 	int					status;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		sigemptyset(&sa.sa_mask);
-		sa.sa_flags = 0;
-		sa.sa_handler = SIG_DFL;
-		sigaction(SIGINT, &sa, NULL);
-		sigaction(SIGQUIT, &sa, NULL);
+		put_sig_dfl();
 		if (make_redirections(cmd->redirs) == -1)
 			exit(1);
 		cmd_path = find_cmdpath(cmd->cmd_and_args[0], shell->envp);
