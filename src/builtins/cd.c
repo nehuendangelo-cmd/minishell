@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 16:50:40 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/11 17:07:28 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/12 22:41:31 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ static char	*find_path(char **cmd, char ***envp)
 {
 	char	*path;
 
+	if (cmd[1] && cmd[2])
+	{
+		ft_putstr_fd("bash: cd: too many arguments\n", 2);
+		return (NULL);
+	}
 	if (!cmd[1])
 		path = find_home_env(*envp, "HOME=");
 	else if (cmd[1][0] == '-' && !cmd[1][1])
@@ -53,7 +58,7 @@ int	handle_cd(char **cmd, char ***envp)
 
 	path = find_path(cmd, envp);
 	if (!path)
-		return (0);
+		return (1);
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(path) == -1)
 	{

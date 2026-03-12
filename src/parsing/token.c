@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:46:45 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/12 20:16:42 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/12 22:27:03 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ void	ft_add_word_token(t_token **head, char *line, int *i)
 	len = 0;
 	while (line[*i] && !ft_ispace(line[*i]) && !ft_is_op(line[*i]))
 	{
+		if (line[*i] == '\'' || line[*i] == '"')
+			*i = ft_skip_quote(line, *i);
+		if (line[*i] == '\0')
+			continue;
 		(*i)++;
 		len++;
 	}

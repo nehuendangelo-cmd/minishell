@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   char.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:45:21 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/12 19:50:45 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/12 21:49:00 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ int	word_is_ok(char c)
 {
 	if (!c)
 		return (0);
-	if (ft_ispace(c))
+	else if (ft_ispace(c))
 		return (0);
-	if (c == '\'' || c == '\"')
+	else if (c == '\'' || c == '\"')
 		return (0);
-	if (c == '|' || c == '<' || c == '>')
+	else if (c == '|' || c == '<' || c == '>')
 		return (0);
 	return (1);
 }

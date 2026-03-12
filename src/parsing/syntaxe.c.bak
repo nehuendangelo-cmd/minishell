@@ -6,7 +6,7 @@
 /*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:46:21 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/12 22:26:26 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/03/12 21:42:40 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,6 @@ int	ft_check_pipe(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' || line[i] == '"')
-		{
-			i = ft_skip_quote(line, i);
-			continue;
-		}
 		if (line[i] == '|')
 		{
 			j = i + 1;
@@ -71,10 +66,6 @@ int	ft_check_redirection(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' || line[i] == '"')
-			i = ft_skip_quote(line, i);
-		if (line[i] == '\0')
-			continue;
 		if (line[i] == '<' || line[i] == '>')
 		{
 			j = i + 1;
