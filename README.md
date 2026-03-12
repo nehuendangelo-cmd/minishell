@@ -1,3 +1,5 @@
+*This project has been created as part of the 42 curriculum by nd-angel, khderdou.*
+
 # Minishell
 
 A 42 project coded by nd-angel and khderdou.
@@ -6,7 +8,9 @@ Goal: recreate a mini bash in C.
 
 ---
 
-## Front-end part
+## Description
+
+### Front-end part
 
 Implemented part: prompt + parsing + expansion.
 
@@ -33,7 +37,7 @@ The front-end reads the user input with `readline`, checks syntax, tokenizes the
 
 ---
 
-## Build / run
+## Instructions
 
 ```bash
 make
@@ -42,9 +46,9 @@ make
 
 ---
 
-## partie backend
+### Back-end part
 
-Partie réalisée : execution des commandes, gestion des pipes, builtins
+Implemented part: command execution, pipes handling, builtins.
 
 The backend part receivce a t_cmd struct from the parse part. it is filled with the list of cmd to execute, and there redirections.
 
@@ -56,15 +60,12 @@ For the builtins, we call our functions we coded ourselves.
 
 For the others, we find their path, and then we execute them using the execve function.
 
-### Structure de l'executor
+### Executor structure
 
-executor.c : check and launch appropriate functions if heredocs, if !cmd, if single builtin, if single cmd
-
-path.c : find the path of a given command so execve can execute it
-
-pipeline.c : monitor the pieline, make pipes, make childs, waitpid all
-
-set_childs.c : set the childs, weither it is the first, a middle, or the last one
+- executor.c : check and launch appropriate functions if heredocs, if !cmd, if single builtin, if single cmd
+- path.c : find the path of a given command so execve can execute it
+- pipeline.c : monitor the pieline, make pipes, make childs, waitpid all
+- set_childs.c : set the childs, weither it is the first, a middle, or the last one
 
 ### Execute_pipeline
 
@@ -75,7 +76,7 @@ at each tour of while (cmd) :
 - We will execute the cmd in the child, so we can handle an exit correctly.
 - with the sigaction command, we put the SIGINT (ctrl + c) and SIGUQUIT (ctrl + ) back to their default behavior. Why ? because SIGINT and SIGUQUIT will close the child, and we will continue to execute the other commands. That is the behavior of bash. Only the exit code of the last command is catched and returned.
 
-### builtins
+### Builtins
 
 The most important is they execute in the parent, not in a child.
 
@@ -87,9 +88,9 @@ To do so, they must not be executed in a child with exceve, because it would not
 
 that is why the builtins are "built in" the shell, so they can be directly executed in the parent.
 
-### instruction
+## Resources
 
-### ressources front-end
+### Front-end resources
 
 - [POSIX Shell specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
 - [Demystifying bash command line processing](https://abhijit-pal.medium.com/demystifying-bash-command-line-processing-a-seven-step-journey-74287e1c635c)
@@ -97,18 +98,19 @@ that is why the builtins are "built in" the shell, so they can be directly execu
 - [Guide to code a simple shell in C](https://medium.com/@WinnieNgina/guide-to-code-a-simple-shell-in-c-bd4a3a4c41cd)
 - [GNU Bash definitions](https://www.gnu.org/software/bash/manual/html_node/Definitions.html)
 
-### ressources back-end
+### Back-end resources
 
-- Writing your own shell explique la logique lexing → parsing → expansion → execution https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+- [Writing your own shell (lexing → parsing → expansion → execution)](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
+- Git resources:
+    - [Learn Git Branching](https://learngitbranching.js.org/?locale=fr_FR)
+    - [Atlassian Gitflow workflow](https://www.atlassian.com/fr/git/tutorials/comparing-workflows/gitflow-workflow)
+    - [Bien nommer ses commits](https://buzut.net/cours/versioning-avec-git/bien-nommer-ses-commits)
+    - [Think like a git](https://think-like-a-git.net/)
+- [Video: Let’s build a super simple shell in C](https://www.youtube.com/watch?v=yTR00r8vBH8)
+- [Linux shell redirections](https://medium.com/@boris.alexandre.rose/linux-shell-les-flux-de-redirection-1b6ffbad9e71)
 
-- utilisation de Git
-    - https://learngitbranching.js.org/?locale=fr_FR
-    - https://www.atlassian.com/fr/git/tutorials/comparing-workflows/gitflow-workflow
-    - Bien nommer ses commit : https://buzut.net/cours/versioning-avec-git/bien-nommer-ses-commits
-    - https://think-like-a-git.net/
+### AI usage
 
-- video Let’s build a super simple shell in C
-
-- les differentes redirections https://medium.com/@boris.alexandre.rose/linux-shell-les-flux-de-redirection-1b6ffbad9e71
-
-- For the backend part, Claude Sonnet 4.6 has been used as a professor that never write code but explain the concepts behind building a shell.
+- AI tool/model used: Claude Sonnet 4.6.
+- How it was used: as a professor-like assistant to explain concepts, not to replace implementation.
+- Parts concerned: mainly back-end understanding (execution flow, pipes, redirections).
