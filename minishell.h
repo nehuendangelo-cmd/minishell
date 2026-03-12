@@ -112,9 +112,12 @@ int		ft_string_vide(const char *s);
 int		ft_strcmp_shell(const char *s1, const char *s2);
 
 void	ft_add_op_token(t_token **head, char *line, int *i);
+t_token *ft_create_double_op_token(char *line, int *i);
 void	ft_add_double_op_token(t_token **head, char *line, int *i);
 void	ft_add_single_op_token(t_token **head, char *line, int *i);
 void	ft_add_word_token(t_token **head, char *line, int *i);
+void    ft_add_token_back(t_token **head, t_token *new);
+t_token *ft_create_quote_token(char *line, int start, int len, char quote);
 void	ft_add_word_quote_token(t_token **head, char *line, int *i);
 
 t_token	*parse_principal(char *line);

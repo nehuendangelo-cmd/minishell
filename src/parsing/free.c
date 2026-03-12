@@ -26,6 +26,34 @@ void free_tokens(t_token *t)
     }
 }
 
+void free_tab(char **tab)
+{
+    int i;
+
+    if (!tab)
+        return;
+    i = 0;
+    while (tab[i])
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
+}
+
+void free_redirs(t_redir *redir)
+{
+    t_redir *tmp;
+
+    while (redir)
+    {
+        tmp = redir->next;
+        free(redir->file);
+        free(redir);
+        redir = tmp;
+    }
+}
+
 
 
 

@@ -46,6 +46,7 @@ SRCS = main.c \
 	src/parsing/syntaxe.c \
 	src/parsing/tok2.c \
 	src/parsing/token.c \
+	src/parsing/utils2.c \
 	src/parsing/utils.c
 
 OBJS = $(SRCS:.c=.o)
