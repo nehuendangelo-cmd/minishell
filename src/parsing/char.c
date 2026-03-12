@@ -1,27 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   char.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/12 19:45:21 by khderdou          #+#    #+#             */
+/*   Updated: 2026/03/12 19:50:45 by khderdou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int ft_skip_quote(char *str, int i)
+int	ft_skip_quote(char *str, int i)
 {
 	char	quote;
 	int		pos;
 
 	if (!str || !str[i])
 		return (i);
-
-	quote = str[i];        
-	pos = i + 1;           
+	quote = str[i];
+	pos = i + 1;
 	while (str[pos] && str[pos] != quote)
 		pos++;
-
-	if (str[pos] == quote)     
+	if (str[pos] == quote)
 		return (pos + 1);
-
-	return (pos);              
+	return (pos);
 }
 
-int ft_op_valid(char *str, int i)
+int	ft_op_valid(char *str, int i)
 {
-    
 	while (str && str[i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
@@ -40,8 +48,8 @@ int ft_op_valid(char *str, int i)
 
 int	ft_syntaxe_op(char *str, int i)
 {
-    char n;
-    char c;
+	char	n;
+	char	c;
 
 	if (!str || !str[i])
 		return (1);
@@ -60,20 +68,22 @@ int	ft_syntaxe_op(char *str, int i)
 	}
 	return (1);
 }
+
 int	ft_ispace(int s)
 {
-	return (s == ' ' || s == '\t' || s == '\n' || s== '\r' || s == '\v'
+	return (s == ' ' || s == '\t' || s == '\n' || s == '\r' || s == '\v'
 		|| s == '\f');
 }
-int word_is_ok(char c)
+
+int	word_is_ok(char c)
 {
-    if (!c)
-        return 0;
-    if (ft_ispace(c))
-        return 0;
-    if (c == '\'' || c == '\"')
-        return 0;
-    if (c == '|' || c == '<' || c == '>')
-        return 0;
-    return 1;
+	if (!c)
+		return (0);
+	if (ft_ispace(c))
+		return (0);
+	if (c == '\'' || c == '\"')
+		return (0);
+	if (c == '|' || c == '<' || c == '>')
+		return (0);
+	return (1);
 }

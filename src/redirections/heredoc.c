@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 23:05:40 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/09 16:11:24 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/12 20:27:17 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	process_heredocs(t_cmd *cmd)
 
 void	handle_heredoc(t_redir *redir)
 {
-	char			*line;
-	int				pid;
+	char				*line;
+	int					pid;
 	struct sigaction	sa;
-	int				status;
+	int					status;
 
 	pipe(redir->pipe_fd);
 	pid = fork();

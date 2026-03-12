@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/11 16:13:50 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/12 20:03:37 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void	set_middle_child(t_pipe *p, t_cmd *cmd, t_shell *shell);
 void	set_last_child(t_pipe *p, t_cmd *cmd, t_shell *shell);
 void	error_execve_cmd(char *cmd_path, char **cmd_args);
 void	error_cmd_path(char **cmd_args);
+int		ft_cmd_count(t_cmd *cmd);
 
 void	process_heredocs(t_cmd *cmd);
 void	handle_heredoc(t_redir *redir);

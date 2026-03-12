@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 19:46:20 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/11 16:15:55 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/12 20:21:09 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	add_var(char ***envp, char *new_var, int size_envp)
 
 void	modify_env_without_equal(char ***envp, char *new_var)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while ((*envp)[i])
 	{
 		if (ft_strncmp(new_var, (*envp)[i], (ft_strlen(new_var))) == 0
 			&& ((*envp)[i][ft_strlen(new_var)] == '='
-			|| (*envp)[i][ft_strlen(new_var)] == '\0'))
+				|| (*envp)[i][ft_strlen(new_var)] == '\0'))
 			return ;
 		i++;
 	}
@@ -81,7 +81,7 @@ void	modify_env(char ***envp, char *new_var)
 
 int	is_valid_var_name(char *cmd)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (!cmd)
@@ -102,12 +102,13 @@ int	is_valid_var_name(char *cmd)
 
 int	handle_export(char ***envp, char **cmd)
 {
-	int		i;
+	int	i;
 
 	i = 1;
 	if (!cmd[1])
 		print_export_env(*envp);
 	else
+	{
 		while (cmd[i])
 		{
 			if (!is_valid_var_name(cmd[i]))
@@ -120,5 +121,6 @@ int	handle_export(char ***envp, char **cmd)
 			modify_env(envp, cmd[i]);
 			i++;
 		}
+	}
 	return (0);
 }

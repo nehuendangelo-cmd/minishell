@@ -1,78 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntaxe.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/12 19:46:21 by khderdou          #+#    #+#             */
+/*   Updated: 2026/03/12 19:46:30 by khderdou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-// retourne 0 si | en debut (token inattendu), -1 si | en fin (end of file), 1 si ok
-int ft_check_debut_fin(char *line)
+// retourne 0 si | en debut (token inattendu), -1 si | en fin (end of file),
+//	1 si ok
+int	ft_check_debut_fin(char *line)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 
-    i = 0;
-    if (!line || !line[0])
-        return (0);
-    while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-        i++;
-    if (line[i] == '|')
-        return (0);
-    j = 0;
-    while (line[j])
-        j++;
-    j--;
-    while (j >= 0 && (line[j] == ' ' || line[j] == '\t'))
-        j--;
-    if (j >= 0 && line[j] == '|')
-        return (-1);
-    return (1);
+	i = 0;
+	if (!line || !line[0])
+		return (0);
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	if (line[i] == '|')
+		return (0);
+	j = 0;
+	while (line[j])
+		j++;
+	j--;
+	while (j >= 0 && (line[j] == ' ' || line[j] == '\t'))
+		j--;
+	if (j >= 0 && line[j] == '|')
+		return (-1);
+	return (1);
 }
 
-int ft_check_pipe(char *line)
+int	ft_check_pipe(char *line)
 {
-    int i = 0;
+	int	i;
+	int	j;
 
-    while (line[i])
-    {
-        if (line[i] == '|')
-        {
-            int j = i + 1;
-            while (line[j] && ft_ispace(line[j]))
-                j++;
-            if (line[j] == '|')
-                return 0; 
-        }
-        i++;
-    }
-    return 1;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '|')
+		{
+			j = i + 1;
+			while (line[j] && ft_ispace(line[j]))
+				j++;
+			if (line[j] == '|')
+				return (0);
+		}
+		i++;
+	}
+	return (1);
 }
 
-int ft_check_redirection(char *line)
+int	ft_check_redirection(char *line)
 {
-    int i = 0;
-    while(line[i])
-    {
-        if (line[i] == '<' || line[i] == '>')
-        {
-            int j = i + 1;
-            if ((line[i] == '<' && line[j] && line[j] == '<') ||
-                (line[i] == '>' && line[j] && line[j] == '>'))
-                j++;
-            while(line[j] && ft_ispace(line[j]))
-                j++;
-            if (!line[j] || !word_is_ok(line[j]))
-                return 0;
+	int	i;
+	int	j;
 
-            i = j - 1; 
-        }
-        i++;
-    }
-    return 1;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '<' || line[i] == '>')
+		{
+			j = i + 1;
+			if ((line[i] == '<' && line[j] && line[j] == '<') || (line[i] == '>'
+					&& line[j] && line[j] == '>'))
+				j++;
+			while (line[j] && ft_ispace(line[j]))
+				j++;
+			if (!line[j] || !word_is_ok(line[j]))
+				return (0);
+			i = j - 1;
+		}
+		i++;
+	}
+	return (1);
 }
 
-int ft_syntax_error(char *line)
+int	ft_syntax_error(char *line)
 {
-    if (ft_check_debut_fin(line) <= 0)
-        return (0);
-    if (!ft_check_redirection(line))
-        return (0);
-    if (!ft_check_pipe(line))
-        return (0);
-    return (1);
+	if (ft_check_debut_fin(line) <= 0)
+		return (0);
+	if (!ft_check_redirection(line))
+		return (0);
+	if (!ft_check_pipe(line))
+		return (0);
+	return (1);
 }
