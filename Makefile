@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+         #
+#    By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/26 16:01:44 by nehuen            #+#    #+#              #
-#    Updated: 2026/03/11 16:14:23 by nehuen           ###   ########.fr        #
+#    Updated: 2026/03/12 18:42:04 by nd-angel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,11 @@ LIBFT = ./libft/libft.a
 
 SRCS = main.c \
 	src/executor/executor.c \
-	src/executor/make.child.c \
 	src/executor/path.c \
 	src/executor/expander.c \
+	src/executor/pipeline.c \
+	src/executor/set_childs.c \
+	src/executor/utils.c \
 	src/builtins/cd.c \
 	src/builtins/echo.c \
 	src/builtins/env.c \
@@ -31,8 +33,6 @@ SRCS = main.c \
 	src/builtins/export2.c \
 	src/builtins/handle_pwd.c \
 	src/builtins/unset.c \
-	src/pipes/pipes.c \
-	src/pipes/set_childs.c \
 	src/redirections/heredoc.c \
 	src/redirections/redirections.c \
 	src/signals.c \

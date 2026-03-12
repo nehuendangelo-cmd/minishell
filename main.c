@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/10 16:41:42 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/12 19:01:06 by nd-angel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ int	main(int argc, char **argv, char **envp)
 			shell.last_exit = 130;
 			g_signal = 0;
 		}
-		if (line[0] == '\0')                                                  
-		{               
-			free(line);                                                       
-			continue ;                                                        
+		if (line[0] == '\0')
+		{
+			free(line);
+			continue ;
 		}
 		add_history(line);
 		if (appel_parse(line, &cmd, &shell) != 0)
