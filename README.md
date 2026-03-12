@@ -1,7 +1,11 @@
 
+*This project has been created as part of the 42 curriculum by nd-angel, khderdou.*
+
 Projet : Minishell
 Compilation : make 
 Lancement : ./minishell
+
+# description
 
 ## partie front-end
 
@@ -71,6 +75,36 @@ https://www.gnu.org/software/bash/manual/html_node/Definitions.html
 
 
 ## partie backend
+
+The backend part receivce a t_cmd struct from the parse part. it is filled with the list of cmd to execute, and there redirections. 
+
+The main goal of the backend part (execute part) is to execute the commands, exit with the same codes as the original shell.
+
+To do so, it first need to identify the command : there is the builtins, which are hardcoded, and there is the other functions which have a pathway. 
+We also need to identify the number of commands, if there is only one, we handle it with a specific function (execute_single_cmd).
+Otherwise, we use execute_pipeline, which contains a loop while (cmd).
+
+For the builtins, we call our functions we coded ourselves.
+
+For the others, we find their path, and then we execute them using the execve function.
+
+
+Execute_pipeline
+at each tour of while (cmd) :
+
+we check if the cmd is the last, if not, we create a pipe which will redirect the output of the cmd to the input of the next one.
+
+Then we create a child, it is a process that will execute in parralel, with access to the memory of the computer.
+
+We will execute the cmd in the child, so we can handle an exit correctly.
+
+with the sigaction command, we put the SIGINT (ctrl + c) and SIGUQUIT (ctrl + /) back to their default behavior. 
+Why ? because SIGINT and SIGUQUIT will close the child, and we will
+
+
+
+
+
 
 
 ### les differentes redirections
