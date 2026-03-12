@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   syntaxe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:46:21 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/12 22:26:26 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/03/12 23:21:13 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// retourne 0 si | en debut (token inattendu), -1 si | en fin (end of file),
-//	1 si ok
 int	ft_check_debut_fin(char *line)
 {
 	int	i;
@@ -48,7 +46,7 @@ int	ft_check_pipe(char *line)
 		if (line[i] == '\'' || line[i] == '"')
 		{
 			i = ft_skip_quote(line, i);
-			continue;
+			continue ;
 		}
 		if (line[i] == '|')
 		{
@@ -74,7 +72,7 @@ int	ft_check_redirection(char *line)
 		if (line[i] == '\'' || line[i] == '"')
 			i = ft_skip_quote(line, i);
 		if (line[i] == '\0')
-			continue;
+			continue ;
 		if (line[i] == '<' || line[i] == '>')
 		{
 			j = i + 1;

@@ -6,7 +6,7 @@
 /*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:45:40 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/12 19:45:43 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/12 23:22:56 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,26 @@ t_token	*ft_create_quote_token(char *line, int start, int len, char quote)
 		token->quote_type = DUBBLE_QUOTE;
 	token->value = ft_substr(line, start, len);
 	return (token);
+}
+
+int	ft_is_numeric_str(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 void	ft_add_word_quote_token(t_token **head, char *line, int *i)

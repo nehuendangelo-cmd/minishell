@@ -6,28 +6,74 @@
 /*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:46:36 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/12 19:59:36 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/12 23:14:33 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_expand_tokens(t_token *tokens, char **envp, int last_status)
+static int	has_quote_char(char *value)
+{
+	int	i;
+
+	i = 0;
+	if (!value)
+		return (0);
+	while (value[i])
+	{
+		if (value[i] == '\'' || value[i] == '"')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static void	expand_word_token(t_token *cur, char **envp, int last_status,
+		int *quoted)
 {
 	char	*expanded;
 
-	while (tokens)
+	*quoted = has_quote_char(cur->value);
+	expanded = ft_expand_word(cur->value, envp, last_status);
+	free(cur->value);
+	cur->value = expanded;
+}
+
+static t_token	*remove_token(t_token **tokens, t_token *prev, t_token *cur)
+{
+	t_token	*next;
+
+	next = cur->next;
+	if (prev)
+		prev->next = next;
+	else
+		*tokens = next;
+	free(cur->value);
+	free(cur);
+	return (next);
+}
+
+void	ft_expand_tokens(t_token **tokens, char **envp, int last_status)
+{
+	t_token	*cur;
+	t_token	*prev;
+	int		quoted;
+
+	cur = *tokens;
+	prev = NULL;
+	while (cur)
 	{
-		if (tokens->type == WORD && tokens->quote_type != SINGLE_QUOTE)
+		if (cur->type == WORD)
 		{
-			if (ft_strchr(tokens->value, '$'))
+			expand_word_token(cur, envp, last_status, &quoted);
+			if (!quoted && cur->value[0] == '\0')
 			{
-				expanded = ft_expand_word(tokens->value, envp, last_status);
-				free(tokens->value);
-				tokens->value = expanded;
+				cur = remove_token(tokens, prev, cur);
+				continue ;
 			}
 		}
-		tokens = tokens->next;
+		prev = cur;
+		cur = cur->next;
 	}
 }
 

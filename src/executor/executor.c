@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/12 21:07:41 by nd-angel         ###   ########.fr       */
+/*   Updated: 2026/03/12 23:24:32 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	exec_single_builtin(t_cmd *cmd, t_shell *shell)
 		dup2(stdout_backup, STDOUT_FILENO);
 		close(stdin_backup);
 		close(stdout_backup);
+		shell->last_exit = 1;
 		return (1);
 	}
 	is_bultin(cmd, shell);
@@ -87,15 +88,16 @@ int	is_bultin(t_cmd *cmd, t_shell *shell)
 				cmd->cmd_and_args[1]), 1);
 	else if (ft_strncmp(cmd->cmd_and_args[0], "exit", 4) == 0
 		&& cmd->cmd_and_args[0][4] == '\0')
-		return (handle_exit(cmd->cmd_and_args, shell->last_exit), 1);
+		return (shell->last_exit = handle_exit(cmd->cmd_and_args,
+				shell->last_exit), 1);
 	return (shell->last_exit = 0, 0);
 }
 
 static void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 {
-	int					pid;
-	char				*cmd_path;
-	int					status;
+	int		pid;
+	char	*cmd_path;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)

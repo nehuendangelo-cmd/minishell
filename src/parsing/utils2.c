@@ -6,7 +6,7 @@
 /*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:47:02 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/12 20:00:24 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/12 23:20:28 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,12 @@ t_cmd	*error(char *msg)
 	write(2, msg, ft_strlen(msg));
 	write(2, "\n", 1);
 	return (NULL);
+}
+
+int	is_redirection(int type)
+{
+	if (type == TOK_REDIR_IN || type == TOK_REDIR_OUT || type == TOK_APPEND
+		|| type == TOK_HEREDOC)
+		return (1);
+	return (0);
 }

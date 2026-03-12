@@ -1,78 +1,46 @@
+# Minishell
 
-*This project has been created as part of the 42 curriculum by nd-angel, khderdou.*
+A 42 project coded by nd-angel and khderdou.
 
-Projet : Minishell
-Compilation : make 
-Lancement : ./minishell
+Goal: recreate a mini bash in C.
 
-# description
+---
 
-## partie front-end
+## Front-end part
 
-Partie réalisée : parsing + gestion des variables d'environnement
+Implemented part: prompt + parsing + expansion.
 
-Parsing
+The front-end reads the user input with `readline`, checks syntax, tokenizes the line, expands variables, then builds the `t_cmd` list sent to the executor.
 
-Le parsing transforme la ligne de commande entrée par l'utilisateur en tokens, applique l'expansion des variables, puis construit une liste de commandes (`t_cmd`) exploitable par l'execution.
+### Prompt / history
 
-Le parser est organisé en plusieurs fichiers afin de séparer les responsabilités.
+- `readline("minishell$")` to read the command line.
+- `add_history(line)` when the line is not empty.
+- `Ctrl-C` resets a clean prompt.
 
-Structure du parsing
+### Parsing (simple)
 
-build.c : construction de la liste de commandes (args + redirections) a partir des tokens
+- syntax pre-check: pipe at start/end, `||`, invalid redirection.
+- tokenization: words + operators (`|`, `<`, `>`, `<<`, `>>`).
+- quote handling while reading the line.
+- final build of a linked list of `t_cmd`.
 
-char.c : validation des operateurs/separateurs et utilitaires de lecture des caracteres (espaces, quotes)
+### Expansion
 
-free.c : liberation de la memoire des tokens, commandes, redirections et tableaux de chaines
+- expansion of `$VAR` and `$?`.
+- no expansion inside single quotes.
+- removal of empty unquoted tokens after expansion.
 
-missing.c : utilitaires de tokenisation (operateurs + creation/ajout de tokens quotes)
+---
 
-parse.c : orchestration du parsing (pre-check syntaxe, tokenisation, expansion, build des commandes)
+## Build / run
 
-quote.c : verification de fermeture des quotes et indication d'expansion selon le type de quote
+```bash
+make
+./minishell
+```
 
-string.c : helpers de chaines dedies au shell (substr/join/compare/tests)
-
-syntaxe.c : verification de la syntaxe des pipes et redirections (debut/fin/invalides)
-
-tok2.c : expansion des variables sur les tokens WORD (sauf en quotes simples)
-
-token.c : creation/ajout des tokens operateurs et mots non quotes
-
-utils.c : expansion des variables d'environnement et helpers lies aux redirections
-
-utils2.c : helpers de chaines avec gestion memoire + fonction d'erreur
-
-Étapes du parsing
-
-*   Lecture de la ligne de commande
-*   Découpage en tokens
-*   Gestion des quotes
-*   Vérification de la syntaxe
-
-Le parser vérifie les erreurs comme :
-
-- pipe au debut ou a la fin
-- `||` (pipe double invalide)
-- redirection invalide (ex. pas de mot/fichier valide apres `<`, `>`, `<<`, `>>`)
-
-*   Création de la liste chaînée de tokens
-
-
-Une fonction centrale "appel_parse" regroupe toutes les etapes du parsing et est appelée dans `main`, ce qui simplifie l'integration entre la partie front-end et la partie back-end.
-
-#ressources front-end:
-
-https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html
-
-https://abhijit-pal.medium.com/demystifying-bash-command-line-processing-a-seven-step-journey-74287e1c635c
-
-https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
-
-https://medium.com/@WinnieNgina/guide-to-code-a-simple-shell-in-c-bd4a3a4c41cd
-
-https://www.gnu.org/software/bash/manual/html_node/Definitions.html
-
+---
 
 ## partie backend
 
@@ -82,10 +50,7 @@ The backend part receivce a t_cmd struct from the parse part. it is filled with 
 
 The main goal of the backend part (execute part) is to execute the commands, exit with the same codes as the original shell.
 
-To do so, it first need to identify the command : there is the builtins, which are hardcoded, and there is the other functions which have a pathway.
-We also need to identify the number of commands, if there is only one, we handle it with a specific function (execute_single_cmd).
-Why ? Because in this case we don't need to make a pipeline.
-Otherwise, we use execute_pipeline, which contains a loop while (cmd).
+To do so, it first need to identify the command : there is the builtins, which are hardcoded, and there is the other functions which have a pathway. We also need to identify the number of commands, if there is only one, we handle it with a specific function (execute_single_cmd). Why ? Because in this case we don't need to make a pipeline. Otherwise, we use execute_pipeline, which contains a loop while (cmd).
 
 For the builtins, we call our functions we coded ourselves.
 
@@ -105,11 +70,10 @@ set_childs.c : set the childs, weither it is the first, a middle, or the last on
 
 at each tour of while (cmd) :
 
-*   we check if the cmd is the last, if not, we create a pipe which will redirect the output of the cmd to the input of the next one.
-*   Then we create a child, it is a process that will execute in parralel, with it's own copy of the parent process.
-*   We will execute the cmd in the child, so we can handle an exit correctly.
-*   with the sigaction command, we put the SIGINT (ctrl + c) and SIGUQUIT (ctrl + \) back to their default behavior.
-    Why ? because SIGINT and SIGUQUIT will close the child, and we will continue to execute the other commands. That is the behavior of bash. Only the exit code of the last command is catched and returned.
+- we check if the cmd is the last, if not, we create a pipe which will redirect the output of the cmd to the input of the next one.
+- Then we create a child, it is a process that will execute in parralel, with it's own copy of the parent process.
+- We will execute the cmd in the child, so we can handle an exit correctly.
+- with the sigaction command, we put the SIGINT (ctrl + c) and SIGUQUIT (ctrl + ) back to their default behavior. Why ? because SIGINT and SIGUQUIT will close the child, and we will continue to execute the other commands. That is the behavior of bash. Only the exit code of the last command is catched and returned.
 
 ### builtins
 
@@ -123,16 +87,19 @@ To do so, they must not be executed in a child with exceve, because it would not
 
 that is why the builtins are "built in" the shell, so they can be directly executed in the parent.
 
+### instruction
 
-# instruction
+### ressources front-end
 
+- [POSIX Shell specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
+- [Demystifying bash command line processing](https://abhijit-pal.medium.com/demystifying-bash-command-line-processing-a-seven-step-journey-74287e1c635c)
+- [Writing your own shell (Purdue)](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
+- [Guide to code a simple shell in C](https://medium.com/@WinnieNgina/guide-to-code-a-simple-shell-in-c-bd4a3a4c41cd)
+- [GNU Bash definitions](https://www.gnu.org/software/bash/manual/html_node/Definitions.html)
 
-# ressources backend
+### ressources back-end
 
-
-- Writing your own shell
-explique la logique lexing → parsing → expansion → execution
- https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+- Writing your own shell explique la logique lexing → parsing → expansion → execution https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
 
 - utilisation de Git
     - https://learngitbranching.js.org/?locale=fr_FR
@@ -140,11 +107,8 @@ explique la logique lexing → parsing → expansion → execution
     - Bien nommer ses commit : https://buzut.net/cours/versioning-avec-git/bien-nommer-ses-commits
     - https://think-like-a-git.net/
 
-- video
- [Let’s build a super simple shell in C](https://www.youtube.com/watch?v=yTR00r8vBH8)
+- video Let’s build a super simple shell in C
 
-- les differentes redirections
-https://medium.com/@boris.alexandre.rose/linux-shell-les-flux-de-redirection-1b6ffbad9e71
+- les differentes redirections https://medium.com/@boris.alexandre.rose/linux-shell-les-flux-de-redirection-1b6ffbad9e71
 
-- For the backend part, Claude Sonnet 4.6 has been used as a professor that never write code
- but explain the concepts behind building a shell.
+- For the backend part, Claude Sonnet 4.6 has been used as a professor that never write code but explain the concepts behind building a shell.

@@ -12,27 +12,7 @@
 
 #include "minishell.h"
 
-static int	is_numeric(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	if (!str[i])
-		return (0);
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-void	handle_exit(char **cmd, int last_exit_code)
+int	handle_exit(char **cmd, int last_exit_code)
 {
 	if (cmd[1])
 	{
@@ -41,9 +21,9 @@ void	handle_exit(char **cmd, int last_exit_code)
 			ft_putstr_fd("bash: ", 2);
 			ft_putstr_fd(cmd[0], 2);
 			ft_putendl_fd(": too many arguments", 2);
-			return ;
+			return (1);
 		}
-		if (is_numeric(cmd[1]))
+		if (ft_is_numeric_str(cmd[1]))
 			exit(ft_atoi(cmd[1]));
 		else
 		{
@@ -57,4 +37,5 @@ void	handle_exit(char **cmd, int last_exit_code)
 	}
 	else
 		exit(last_exit_code);
+	return (0);
 }
