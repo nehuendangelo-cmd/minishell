@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nd-angel <nd-angel@student.42.fr>          +#+  +:+       +#+         #
+#    By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/26 16:01:44 by nehuen            #+#    #+#              #
-#    Updated: 2026/03/12 18:42:04 by nd-angel         ###   ########.fr        #
+#    Updated: 2026/03/13 12:26:21 by nehuen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ CFLAGS = -I. -Wall -Wextra -Werror -I/opt/homebrew/opt/readline/include
 LIBFT = ./libft/libft.a
 
 SRCS = main.c \
+	src/env/env.c \
 	src/executor/executor.c \
 	src/executor/path.c \
-	src/executor/expander.c \
 	src/executor/pipeline.c \
 	src/executor/set_childs.c \
 	src/executor/utils.c \

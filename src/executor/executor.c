@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:37:08 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/12 23:24:32 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/13 12:27:22 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,49 +48,13 @@ static int	exec_single_builtin(t_cmd *cmd, t_shell *shell)
 		return (is_bultin(cmd, shell));
 	if (make_redirections(cmd->redirs) == -1)
 	{
-		dup2(stdin_backup, STDIN_FILENO);
-		dup2(stdout_backup, STDOUT_FILENO);
-		close(stdin_backup);
-		close(stdout_backup);
+		restore_fds(stdin_backup, stdout_backup);
 		shell->last_exit = 1;
 		return (1);
 	}
 	is_bultin(cmd, shell);
-	dup2(stdin_backup, STDIN_FILENO);
-	dup2(stdout_backup, STDOUT_FILENO);
-	close(stdin_backup);
-	close(stdout_backup);
+	restore_fds(stdin_backup, stdout_backup);
 	return (1);
-}
-
-int	is_bultin(t_cmd *cmd, t_shell *shell)
-{
-	if (ft_strncmp(cmd->cmd_and_args[0], "export", 6) == 0
-		&& cmd->cmd_and_args[0][6] == '\0')
-		return (shell->last_exit = handle_export(&shell->envp,
-				cmd->cmd_and_args), 1);
-	else if (ft_strncmp(cmd->cmd_and_args[0], "echo", 4) == 0
-		&& cmd->cmd_and_args[0][4] == '\0')
-		return (shell->last_exit = handle_echo(cmd->cmd_and_args), 1);
-	else if (ft_strncmp(cmd->cmd_and_args[0], "pwd", 3) == 0
-		&& cmd->cmd_and_args[0][3] == '\0')
-		return (shell->last_exit = handle_pwd(), 1);
-	else if (ft_strncmp(cmd->cmd_and_args[0], "env", 3) == 0
-		&& cmd->cmd_and_args[0][3] == '\0')
-		return (shell->last_exit = handle_env(shell->envp), 1);
-	else if (ft_strncmp(cmd->cmd_and_args[0], "cd", 2) == 0
-		&& cmd->cmd_and_args[0][2] == '\0')
-		return (shell->last_exit = handle_cd(cmd->cmd_and_args, &shell->envp),
-			1);
-	else if (ft_strncmp(cmd->cmd_and_args[0], "unset", 5) == 0
-		&& cmd->cmd_and_args[0][5] == '\0')
-		return (shell->last_exit = handle_unset(&shell->envp,
-				cmd->cmd_and_args[1]), 1);
-	else if (ft_strncmp(cmd->cmd_and_args[0], "exit", 4) == 0
-		&& cmd->cmd_and_args[0][4] == '\0')
-		return (shell->last_exit = handle_exit(cmd->cmd_and_args,
-				shell->last_exit), 1);
-	return (shell->last_exit = 0, 0);
 }
 
 static void	execute_single_cmd(t_cmd *cmd, t_shell *shell)

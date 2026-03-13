@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 15:39:31 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/12 23:22:30 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/13 12:28:56 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,8 @@ void				error_execve_cmd(char *cmd_path, char **cmd_args);
 void				error_cmd_path(char **cmd_args);
 int					ft_cmd_count(t_cmd *cmd);
 void				put_sig_dfl(void);
+void				restore_fds(int stdin_bak, int stdout_bak);
+int					is_bultin2(t_cmd *cmd, t_shell *shell);
 
 void				process_heredocs(t_cmd *cmd);
 void				handle_heredoc(t_redir *redir);
@@ -190,11 +192,14 @@ void				modify_env_without_equal(char ***envp, char *new_var);
 void				add_var(char ***envp, char *new_var, int size_envp);
 void				print_export_env(char **envp);
 
-char				*get_env_value(char **envp, char *name);
-
 // ---- signaux ----
 
 extern int			g_signal;
-void				signal_handler(int sig);
+void						signal_handler(int sig);
+void						set_signal(void);
+void						update_g_signal(t_shell *shell);
+
+// ---- signaux ----
+char	**ft_copy_env(char **envp);
 
 #endif

@@ -3,24 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 18:35:36 by nd-angel          #+#    #+#             */
-/*   Updated: 2026/03/12 23:27:21 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/13 12:27:53 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	put_sig_dfl(void)
+int	is_bultin2(t_cmd *cmd, t_shell *shell)
 {
-	struct sigaction	sa;
+	char	*name;
 
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	name = cmd->cmd_and_args[0];
+	if (ft_strncmp(name, "cd", 2) == 0 && name[2] == '\0')
+		return (shell->last_exit = handle_cd(cmd->cmd_and_args,
+				&shell->envp), 1);
+	if (ft_strncmp(name, "unset", 5) == 0 && name[5] == '\0')
+		return (shell->last_exit = handle_unset(&shell->envp,
+				cmd->cmd_and_args[1]), 1);
+	if (ft_strncmp(name, "exit", 4) == 0 && name[4] == '\0')
+		return (shell->last_exit = handle_exit(cmd->cmd_and_args,
+				shell->last_exit), 1);
+	return (shell->last_exit = 0, 0);
+}
+
+int	is_bultin(t_cmd *cmd, t_shell *shell)
+{
+	char	*name;
+
+	name = cmd->cmd_and_args[0];
+	if (ft_strncmp(name, "export", 6) == 0 && name[6] == '\0')
+		return (shell->last_exit = handle_export(&shell->envp,
+				cmd->cmd_and_args), 1);
+	if (ft_strncmp(name, "echo", 4) == 0 && name[4] == '\0')
+		return (shell->last_exit = handle_echo(cmd->cmd_and_args), 1);
+	if (ft_strncmp(name, "pwd", 3) == 0 && name[3] == '\0')
+		return (shell->last_exit = handle_pwd(), 1);
+	if (ft_strncmp(name, "env", 3) == 0 && name[3] == '\0')
+		return (shell->last_exit = handle_env(shell->envp), 1);
+	return (is_bultin2(cmd, shell));
+}
+
+void	restore_fds(int stdin_bak, int stdout_bak)
+{
+	dup2(stdin_bak, STDIN_FILENO);
+	dup2(stdout_bak, STDOUT_FILENO);
+	close(stdin_bak);
+	close(stdout_bak);
 }
 
 int	ft_cmd_count(t_cmd *cmd)
