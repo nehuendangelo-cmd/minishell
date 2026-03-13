@@ -54,6 +54,17 @@ void	restore_fds(int stdin_bak, int stdout_bak)
 	close(stdout_bak);
 }
 
+void	apply_redirs_only(t_redir *redirs)
+{
+	int	stdin_bak;
+	int	stdout_bak;
+
+	stdin_bak = dup(STDIN_FILENO);
+	stdout_bak = dup(STDOUT_FILENO);
+	make_redirections(redirs);
+	restore_fds(stdin_bak, stdout_bak);
+}
+
 int	ft_cmd_count(t_cmd *cmd)
 {
 	t_cmd	*count;

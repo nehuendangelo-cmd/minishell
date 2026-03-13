@@ -14,6 +14,20 @@
 
 int			g_signal = 0;
 
+static int	is_only_spaces(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static void	process_line(char *line, t_shell *shell)
 {
 	t_cmd	*cmd;
@@ -43,7 +57,7 @@ static void	main_loop(t_shell *shell)
 			break ;
 		if (g_signal == SIGINT)
 			update_g_signal(shell);
-		if (line[0] == '\0')
+		if (!line[0] || is_only_spaces(line))
 		{
 			free(line);
 			continue ;

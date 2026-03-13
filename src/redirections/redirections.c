@@ -32,28 +32,37 @@ static int	make_append_or_heredoc(t_redir *redirs)
 	return (0);
 }
 
-int	make_redirections(t_redir *redirs)
+static int	make_in_or_out(t_redir *redirs)
 {
 	int	fd;
 
+	if (redirs->type == REDIR_IN)
+	{
+		fd = open(redirs->file, O_RDONLY);
+		if (fd == -1)
+			return (perror("Error opening infile"), -1);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	else if (redirs->type == REDIR_OUT)
+	{
+		fd = open(redirs->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd == -1)
+			return (perror("Error opening outfile"), -1);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+	return (0);
+}
+
+int	make_redirections(t_redir *redirs)
+{
 	while (redirs)
 	{
-		fd = -1;
-		if (redirs->type == REDIR_IN)
+		if (redirs->type == REDIR_IN || redirs->type == REDIR_OUT)
 		{
-			fd = open(redirs->file, O_RDONLY);
-			if (fd == -1)
-				return (perror("Error opening infile"), -1);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
-		else if (redirs->type == REDIR_OUT)
-		{
-			fd = open(redirs->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd == -1)
-				return (perror("Error opening infile"), -1);
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
+			if (make_in_or_out(redirs) == -1)
+				return (-1);
 		}
 		else if (make_append_or_heredoc(redirs) == -1)
 			return (-1);

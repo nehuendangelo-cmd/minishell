@@ -168,6 +168,7 @@ void				error_cmd_path(char **cmd_args);
 int					ft_cmd_count(t_cmd *cmd);
 void				put_sig_dfl(void);
 void				restore_fds(int stdin_bak, int stdout_bak);
+void				apply_redirs_only(t_redir *redirs);
 int					is_bultin2(t_cmd *cmd, t_shell *shell);
 
 void				process_heredocs(t_cmd *cmd);

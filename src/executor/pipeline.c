@@ -57,34 +57,33 @@ static void	wait_all_pids(t_pipe *p, t_shell *shell)
 	free(p->pids_array);
 }
 
+static void	parent_close_pipes(t_pipe *p, t_cmd *cmd)
+{
+	if (cmd->next)
+		close(p->pipe_fd[1]);
+	if (p->prev_read_pipe != -1)
+		close(p->prev_read_pipe);
+	if (cmd->next)
+		p->prev_read_pipe = p->pipe_fd[0];
+}
+
 void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 {
-	int					i;
-	t_pipe				p;
+	int		i;
+	t_pipe	p;
 
 	init_pipes(&p, cmd);
 	i = 0;
 	while (cmd)
 	{
 		if (cmd->next && pipe(p.pipe_fd) == -1)
-		{
-			perror("pipe");
 			break ;
-		}
 		p.pids_array[i] = fork();
 		if (p.pids_array[i] == -1)
-		{
-			perror("fork");
 			break ;
-		}
 		if (p.pids_array[i] == 0)
 			set_child(&p, cmd, shell);
-		if (cmd->next)
-			close(p.pipe_fd[1]);
-		if (p.prev_read_pipe != -1)
-			close(p.prev_read_pipe);
-		if (cmd->next)
-			p.prev_read_pipe = p.pipe_fd[0];
+		parent_close_pipes(&p, cmd);
 		cmd = cmd->next;
 		i++;
 	}

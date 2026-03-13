@@ -38,6 +38,8 @@ int	parse_precheck(char *line)
 {
 	int	res;
 
+	if (!ft_check_quote(line, NULL))
+		return (error("syntax error: unclosed quote"), 1);
 	res = ft_check_debut_fin(line);
 	if (res == 0)
 		return (error("syntax error near unexpected token `|'"), 1);
