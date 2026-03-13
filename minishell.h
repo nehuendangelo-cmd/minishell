@@ -195,6 +195,7 @@ void				print_export_env(char **envp);
 extern int			g_signal;
 void				signal_handler(int sig);
 void				set_signal(void);
+void				set_signal_ignore(void);
 void				update_g_signal(t_shell *shell);
 
 // ---- env ----

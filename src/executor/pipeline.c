@@ -50,6 +50,8 @@ static void	wait_all_pids(t_pipe *p, t_shell *shell)
 		i++;
 	}
 	waitpid(p->pids_array[i], &p->status, 0);
+	if (WIFSIGNALED(p->status) && WTERMSIG(p->status) == SIGINT)
+		write(1, "\n", 1);
 	if (WIFEXITED(p->status))
 		shell->last_exit = WEXITSTATUS(p->status);
 	else
@@ -72,6 +74,7 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 	int		i;
 	t_pipe	p;
 
+	set_signal_ignore();
 	init_pipes(&p, cmd);
 	i = 0;
 	while (cmd)
@@ -88,4 +91,5 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 		i++;
 	}
 	wait_all_pids(&p, shell);
+	set_signal();
 }

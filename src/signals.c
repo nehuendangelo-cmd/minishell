@@ -45,6 +45,17 @@ void	set_signal(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
+void	set_signal_ignore(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
 void	update_g_signal(t_shell *shell)
 {
 	shell->last_exit = 130;

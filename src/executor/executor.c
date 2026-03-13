@@ -76,16 +76,20 @@ static void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 	int		pid;
 	int		status;
 
+	set_signal_ignore();
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
 		shell->last_exit = 1;
-		return ;
+		return (set_signal());
 	}
 	if (pid == 0)
 		exec_child(cmd, shell);
 	waitpid(pid, &status, 0);
+	set_signal();
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		write(1, "\n", 1);
 	if (WIFEXITED(status))
 		shell->last_exit = WEXITSTATUS(status);
 	else
