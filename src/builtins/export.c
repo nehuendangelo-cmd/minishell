@@ -103,8 +103,10 @@ int	is_valid_var_name(char *cmd)
 int	handle_export(char ***envp, char **cmd)
 {
 	int	i;
+	int	ret;
 
 	i = 1;
+	ret = 0;
 	if (!cmd[1])
 		print_export_env(*envp);
 	else
@@ -116,11 +118,12 @@ int	handle_export(char ***envp, char **cmd)
 				ft_putstr_fd("bash: export: ", 2);
 				ft_putstr_fd(cmd[i], 2);
 				ft_putendl_fd(": not a valid identifier", 2);
-				return (1);
+				ret = 1;
 			}
-			modify_env(envp, cmd[i]);
+			else
+				modify_env(envp, cmd[i]);
 			i++;
 		}
 	}
-	return (0);
+	return (ret);
 }

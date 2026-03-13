@@ -14,6 +14,7 @@
 
 int	handle_exit(char **cmd, int last_exit_code)
 {
+	ft_putendl_fd("exit", 2);
 	if (cmd[1])
 	{
 		if (!ft_is_numeric_str(cmd[1]))

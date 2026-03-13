@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 00:07:05 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/13 12:12:54 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/13 22:39:49 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,10 @@ static void	process_line(char *line, t_shell *shell)
 		free(line);
 		return ;
 	}
-	if (cmd && cmd->cmd_and_args)
+	if (cmd)
 		execute(cmd, shell);
 	free_cmds(cmd);
 	free(line);
-}
-
-static char	*read_line_non_interactive(void)
-{
-	char	*line;
-	size_t	len;
-	ssize_t	nread;
-
-	line = NULL;
-	len = 0;
-	nread = getline(&line, &len, stdin);
-	if (nread == -1)
-	{
-		free(line);
-		return (NULL);
-	}
-	if (nread > 0 && line[nread - 1] == '\n')
-		line[nread - 1] = '\0';
-	return (line);
 }
 
 static void	main_loop(t_shell *shell)
@@ -57,10 +38,7 @@ static void	main_loop(t_shell *shell)
 
 	while (1)
 	{
-		if (isatty(fileno(stdin)))
-			line = readline("minishell$ ");
-		else
-			line = read_line_non_interactive();
+		line = readline("minishell$ ");
 		if (!line)
 			break ;
 		if (g_signal == SIGINT)
@@ -84,5 +62,6 @@ int	main(int argc, char **argv, char **envp)
 	shell.envp = ft_copy_env(envp);
 	shell.last_exit = 0;
 	main_loop(&shell);
+	free_tab(shell.envp);
 	return (shell.last_exit);
 }

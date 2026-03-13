@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make re:*)",
+      "Bash(echo 'echo hello' | ./minishell 2>&1)"
+    ]
+  }
+}

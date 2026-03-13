@@ -27,6 +27,8 @@ static char	**make_new_envp(int size, int to_delete, char ***envp)
 	{
 		if (i != to_delete)
 			new_envp[j++] = (*envp)[i];
+		else
+			free((*envp)[i]);
 		i++;
 	}
 	new_envp[j] = NULL;
@@ -70,25 +72,41 @@ static int	find_to_delete(char ***envp, char *cmd, int *size)
 	return (to_delete);
 }
 
-int	handle_unset(char ***envp, char *cmd)
+static int	unset_one(char ***envp, char *name)
 {
 	int		to_delete;
 	char	**new_envp;
 	int		size;
 
-	if (!cmd)
-		return (0);
-	if (!is_valid_identifier(cmd))
+	if (!is_valid_identifier(name))
 	{
 		ft_putstr_fd("minishell: unset: `", 2);
-		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(name, 2);
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (1);
 	}
-	to_delete = find_to_delete(envp, cmd, &size);
+	to_delete = find_to_delete(envp, name, &size);
 	if (to_delete == -1)
 		return (0);
 	new_envp = make_new_envp(size + 1, to_delete, envp);
 	*envp = new_envp;
 	return (0);
+}
+
+int	handle_unset(char ***envp, char **cmd)
+{
+	int	i;
+	int	ret;
+
+	i = 1;
+	ret = 0;
+	if (!cmd[1])
+		return (0);
+	while (cmd[i])
+	{
+		if (unset_one(envp, cmd[i]) != 0)
+			ret = 1;
+		i++;
+	}
+	return (ret);
 }

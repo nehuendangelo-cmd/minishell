@@ -180,7 +180,7 @@ int					handle_env(char **envp);
 int					handle_exit(char **cmd, int last_exit_code);
 int					handle_export(char ***envp, char **cmd);
 int					handle_pwd(void);
-int					handle_unset(char ***envp, char *cmd);
+int					handle_unset(char ***envp, char **cmd);
 int					handle_cd(char **cmd, char ***envp);
 void				modify_env(char ***envp, char *new_var);
 int					is_bultin(t_cmd *cmd, t_shell *shell);

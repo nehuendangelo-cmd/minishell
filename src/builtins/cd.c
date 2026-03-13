@@ -35,14 +35,20 @@ static char	*find_path(char **cmd, char ***envp)
 	char	*path;
 
 	if (!cmd[1])
+	{
 		path = find_home_env(*envp, "HOME=");
-	else if (cmd[1][0] == '-' && !cmd[1][1])
+		if (!path)
+			return (ft_putendl_fd("bash: cd: HOME not set", 2), NULL);
+		return (path);
+	}
+	if (cmd[1][0] == '-' && !cmd[1][1])
+	{
 		path = find_home_env(*envp, "OLDPWD=");
-	else
-		path = cmd[1];
-	if (!path)
-		return (NULL);
-	return (path);
+		if (!path)
+			return (ft_putendl_fd("bash: cd: OLDPWD not set", 2), NULL);
+		return (path);
+	}
+	return (cmd[1]);
 }
 
 static void	update_env_pwd(char ***envp, char *old_pwd, char **cmd)
@@ -67,6 +73,11 @@ int	handle_cd(char **cmd, char ***envp)
 	char	*path;
 	char	*old_pwd;
 
+	if (cmd[1] && cmd[2])
+	{
+		ft_putendl_fd("bash: cd: too many arguments", 2);
+		return (1);
+	}
 	path = find_path(cmd, envp);
 	if (!path)
 		return (1);

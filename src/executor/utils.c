@@ -22,7 +22,7 @@ int	is_bultin2(t_cmd *cmd, t_shell *shell)
 				&shell->envp), 1);
 	if (ft_strncmp(name, "unset", 5) == 0 && name[5] == '\0')
 		return (shell->last_exit = handle_unset(&shell->envp,
-				cmd->cmd_and_args[1]), 1);
+				cmd->cmd_and_args), 1);
 	if (ft_strncmp(name, "exit", 4) == 0 && name[4] == '\0')
 		return (shell->last_exit = handle_exit(cmd->cmd_and_args,
 				shell->last_exit), 1);

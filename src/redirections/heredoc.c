@@ -42,7 +42,7 @@ static void	set_heredoc_child(t_redir *redir)
 			close(redir->pipe_fd[1]);
 			exit(0);
 		}
-		if (ft_strncmp(redir->file, line, ft_strlen(redir->file)) == 0)
+		if (ft_strcmp_shell(redir->file, line) == 0)
 		{
 			free(line);
 			close(redir->pipe_fd[1]);

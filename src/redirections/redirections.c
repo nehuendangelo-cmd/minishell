@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 18:45:47 by nd-angel          #+#    #+#             */
-/*   Updated: 2026/03/13 11:00:20 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/13 23:03:23 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	make_append_or_heredoc(t_redir *redirs)
 		if (fd == -1)
 			return (perror("Error opening infile"), -1);
 		dup2(fd, STDOUT_FILENO);
+		close(fd);
 	}
 	else if (redirs->type == REDIR_HEREDOC)
 	{
@@ -44,6 +45,7 @@ int	make_redirections(t_redir *redirs)
 			if (fd == -1)
 				return (perror("Error opening infile"), -1);
 			dup2(fd, STDIN_FILENO);
+			close(fd);
 		}
 		else if (redirs->type == REDIR_OUT)
 		{
@@ -51,6 +53,7 @@ int	make_redirections(t_redir *redirs)
 			if (fd == -1)
 				return (perror("Error opening infile"), -1);
 			dup2(fd, STDOUT_FILENO);
+			close(fd);
 		}
 		else if (make_append_or_heredoc(redirs) == -1)
 			return (-1);

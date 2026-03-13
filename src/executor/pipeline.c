@@ -66,9 +66,17 @@ void	execute_pipeline(t_cmd *cmd, t_shell *shell)
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->next)
-			pipe(p.pipe_fd);
+		if (cmd->next && pipe(p.pipe_fd) == -1)
+		{
+			perror("pipe");
+			break ;
+		}
 		p.pids_array[i] = fork();
+		if (p.pids_array[i] == -1)
+		{
+			perror("fork");
+			break ;
+		}
 		if (p.pids_array[i] == 0)
 			set_child(&p, cmd, shell);
 		if (cmd->next)

@@ -64,6 +64,12 @@ static void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 	int		status;
 
 	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		shell->last_exit = 1;
+		return ;
+	}
 	if (pid == 0)
 	{
 		put_sig_dfl();
@@ -82,11 +88,27 @@ static void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 		shell->last_exit = 128 + WTERMSIG(status);
 }
 
+static void	apply_redirs_only(t_redir *redirs)
+{
+	int	stdin_bak;
+	int	stdout_bak;
+
+	stdin_bak = dup(STDIN_FILENO);
+	stdout_bak = dup(STDOUT_FILENO);
+	make_redirections(redirs);
+	restore_fds(stdin_bak, stdout_bak);
+}
+
 void	execute(t_cmd *cmd, t_shell *shell)
 {
 	process_heredocs(cmd);
-	if (!cmd->cmd_and_args || !cmd->cmd_and_args[0] || !cmd->cmd_and_args[0][0])
+	if (!cmd->cmd_and_args || !cmd->cmd_and_args[0]
+		|| !cmd->cmd_and_args[0][0])
+	{
+		if (cmd->redirs)
+			apply_redirs_only(cmd->redirs);
 		return ;
+	}
 	if (!cmd->next && exec_single_builtin(cmd, shell))
 		return ;
 	if (cmd->next)

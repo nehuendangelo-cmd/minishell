@@ -23,8 +23,6 @@ char	*expand_variable(char *str, int *i, char **envp, int last_status)
 		return (tmp = ft_itoa(last_status), (*i)++, tmp);
 	if (str[*i] == '$')
 		return (tmp = ft_itoa(getpid()), (*i)++, tmp);
-	if (str[*i] == '"')
-		return (ft_strdup(""));
 	if (!ft_isalnum(str[*i]) && str[*i] != '_')
 		return (ft_strdup("$"));
 	start = *i;
