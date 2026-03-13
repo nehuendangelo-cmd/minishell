@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 16:34:23 by nehuen            #+#    #+#             */
-/*   Updated: 2026/03/10 17:40:51 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/13 12:41:00 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	error_execve_cmd(char *cmd_path, char **cmd_args)
 	{
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(cmd_args[0], 2);
-		ft_putendl_fd(": Is a directory", 2);
+		ft_putendl_fd(": is a directory", 2);
 		free_paths(cmd_args);
 		free(cmd_path);
 		exit(126);

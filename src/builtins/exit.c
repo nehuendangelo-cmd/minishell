@@ -32,7 +32,7 @@ int	handle_exit(char **cmd, int last_exit_code)
 			ft_putstr_fd(": ", 2);
 			ft_putstr_fd(cmd[1], 2);
 			ft_putendl_fd(": numeric argument required", 2);
-			exit(2);
+			exit(255);
 		}
 	}
 	else

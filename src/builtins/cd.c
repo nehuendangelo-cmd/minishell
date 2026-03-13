@@ -34,11 +34,6 @@ static char	*find_path(char **cmd, char ***envp)
 {
 	char	*path;
 
-	if (cmd[1] && cmd[2])
-	{
-		ft_putstr_fd("bash: cd: too many arguments\n", 2);
-		return (NULL);
-	}
 	if (!cmd[1])
 		path = find_home_env(*envp, "HOME=");
 	else if (cmd[1][0] == '-' && !cmd[1][1])

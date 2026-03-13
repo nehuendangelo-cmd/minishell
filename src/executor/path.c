@@ -6,7 +6,7 @@
 /*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 16:35:54 by nd-angel          #+#    #+#             */
-/*   Updated: 2026/02/27 14:24:22 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/13 12:41:19 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ static int	check_access_file(char *cmd_path)
 	{
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(cmd_path, 2);
-		ft_putendl_fd(": command not found", 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		exit(127);
 	}
 	if (access(cmd_path, X_OK) != 0)
 	{
 		ft_putstr_fd(cmd_path, 2);
-		ft_putendl_fd(": permission denied", 2);
+		ft_putendl_fd(": Permission denied", 2);
 		exit(126);
 	}
 	return (0);
