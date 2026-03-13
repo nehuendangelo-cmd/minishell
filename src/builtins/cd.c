@@ -45,22 +45,10 @@ static char	*find_path(char **cmd, char ***envp)
 	return (path);
 }
 
-int	handle_cd(char **cmd, char ***envp)
+static void	update_env_pwd(char ***envp, char *old_pwd, char **cmd)
 {
-	char	*path;
-	char	*old_pwd;
 	char	*pwd_buffer;
 
-	path = find_path(cmd, envp);
-	if (!path)
-		return (1);
-	old_pwd = getcwd(NULL, 0);
-	if (chdir(path) == -1)
-	{
-		perror("cd");
-		free(old_pwd);
-		return (1);
-	}
 	pwd_buffer = ft_strjoin("OLDPWD=", old_pwd);
 	free(old_pwd);
 	modify_env(envp, pwd_buffer);
@@ -72,5 +60,23 @@ int	handle_cd(char **cmd, char ***envp)
 	modify_env(envp, pwd_buffer);
 	free(pwd_buffer);
 	free(old_pwd);
+}
+
+int	handle_cd(char **cmd, char ***envp)
+{
+	char	*path;
+	char	*old_pwd;
+
+	path = find_path(cmd, envp);
+	if (!path)
+		return (1);
+	old_pwd = getcwd(NULL, 0);
+	if (chdir(path) == -1)
+	{
+		perror("cd");
+		free(old_pwd);
+		return (1);
+	}
+	update_env_pwd(envp, old_pwd, cmd);
 	return (0);
 }

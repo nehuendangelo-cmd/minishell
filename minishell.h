@@ -140,7 +140,6 @@ void				free_tab(char **tab);
 void				free_redirs(t_redir *redir);
 
 int					is_redirection(int type);
-int					is_redirection_prev(t_token *token);
 char				*expand_variable(char *str, int *i, char **envp,
 						int last_status);
 int					ft_gere_guillemet(char c, char *quote, int *i);
@@ -148,7 +147,6 @@ char				*ft_expand_word(char *str, char **envp, int last_status);
 char				*ft_get_env_value(char **envp, char *name);
 char				*ft_strjoin_free(char *s1, char *s2);
 char				*ft_charjoin(char *s, char c);
-char				*ft_strcpy(char *dest, const char *src);
 
 void				ft_expand_tokens(t_token **tokens, char **envp,
 						int last_status);
@@ -187,7 +185,6 @@ int					handle_cd(char **cmd, char ***envp);
 void				modify_env(char ***envp, char *new_var);
 int					is_bultin(t_cmd *cmd, t_shell *shell);
 int					is_valid_var_name(char *cmd);
-void				modify_env(char ***envp, char *new_var);
 void				modify_env_without_equal(char ***envp, char *new_var);
 void				add_var(char ***envp, char *new_var, int size_envp);
 void				print_export_env(char **envp);
@@ -195,11 +192,11 @@ void				print_export_env(char **envp);
 // ---- signaux ----
 
 extern int			g_signal;
-void						signal_handler(int sig);
-void						set_signal(void);
-void						update_g_signal(t_shell *shell);
+void				signal_handler(int sig);
+void				set_signal(void);
+void				update_g_signal(t_shell *shell);
 
-// ---- signaux ----
-char	**ft_copy_env(char **envp);
+// ---- env ----
+char				**ft_copy_env(char **envp);
 
 #endif

@@ -25,28 +25,20 @@ char	*ft_charjoin(char *s, char c)
 {
 	char	*res;
 	int		len;
+	int		i;
 
 	len = ft_strlen(s);
 	res = malloc(len + 2);
-	ft_strcpy(res, s);
+	i = 0;
+	while (s[i])
+	{
+		res[i] = s[i];
+		i++;
+	}
 	res[len] = c;
 	res[len + 1] = '\0';
 	free(s);
 	return (res);
-}
-
-char	*ft_strcpy(char *dest, const char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
 }
 
 t_cmd	*error(char *msg)
@@ -63,4 +55,19 @@ int	is_redirection(int type)
 		|| type == TOK_HEREDOC)
 		return (1);
 	return (0);
+}
+
+char	*ft_get_env_value(char **envp, char *name)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (envp[i] && ft_strncmp(name, envp[i], ft_strlen(name)) == 0
+			&& envp[i][ft_strlen(name)] == '=')
+			return (&envp[i][ft_strlen(name) + 1]);
+		i++;
+	}
+	return (NULL);
 }

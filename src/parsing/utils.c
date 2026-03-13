@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:46:54 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/13 19:09:10 by nehuen           ###   ########.fr       */
+/*   Updated: 2026/03/13 00:00:00 by khderdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,32 @@ char	*expand_variable(char *str, int *i, char **envp, int last_status)
 		return (ft_strdup(""));
 }
 
-// gere l'entree/sortie d'une zone de guillemets (simple ou double)
-// retourne 1 si le caractere courant etait un guillemet, 0 sinon
+static char	*expand_tilde(char **envp, int *i)
+{
+	char	*val;
+
+	val = ft_get_env_value(envp, "HOME");
+	if (val)
+		val = ft_strdup(val);
+	else
+		val = ft_strdup("~");
+	(*i)++;
+	return (val);
+}
+
+static char	*expand_backslash(char *str, int *i)
+{
+	char	tmp[2];
+
+	(*i)++;
+	if (!str[*i])
+		return (ft_strdup(""));
+	tmp[0] = str[*i];
+	tmp[1] = '\0';
+	(*i)++;
+	return (ft_strdup(tmp));
+}
+
 int	ft_gere_guillemet(char c, char *quote, int *i)
 {
 	if (c != '\'' && c != '"')
@@ -60,7 +84,6 @@ int	ft_gere_guillemet(char c, char *quote, int *i)
 	return (0);
 }
 
-// parcourt le mot et expande les $variables en respectant les guillemets
 char	*ft_expand_word(char *str, char **envp, int last_status)
 {
 	int		i;
@@ -76,56 +99,16 @@ char	*ft_expand_word(char *str, char **envp, int last_status)
 		if (ft_gere_guillemet(str[i], &quote, &i))
 			continue ;
 		if (str[i] == '$' && quote != '\'')
-		{
 			val = expand_variable(str, &i, envp, last_status);
-			res = ft_strjoin_free(res, val);
-			free(val);
-		}
-		else if (str[i] == '~' && quote == 0 && i == 0
+		else if (!quote && str[i] == '~' && !i
 			&& (!str[1] || str[1] == '/' || str[1] == ' '))
- 		{               
-      val = ft_get_env_value(envp, "HOME");
-      if (val)
-          val = ft_strdup(val);
-      else
-          val = ft_strdup("~");
-      res = ft_strjoin_free(res, val);
-      free(val);
-      i++;
-  	}
-		else if (str[i] == '\\' && quote == 0)
-		{
-			i++;
-			if (str[i])
-				res = ft_charjoin(res, str[i++]);
-		}
+			val = expand_tilde(envp, &i);
+		else if (str[i] == '\\' && !quote)
+			val = expand_backslash(str, &i);
 		else
-			res = ft_charjoin(res, str[i++]);
+			val = ft_charjoin(ft_strdup(""), str[i++]);
+		res = ft_strjoin_free(res, val);
+		free(val);
 	}
 	return (res);
-}
-
-char	*ft_get_env_value(char **envp, char *name)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (envp[i] && ft_strncmp(name, envp[i], ft_strlen(name)) == 0
-			&& envp[i][ft_strlen(name)] == '=')
-			return (&envp[i][ft_strlen(name) + 1]);
-		i++;
-	}
-	return (NULL);
-}
-
-int	is_redirection_prev(t_token *token)
-{
-	if (!token || !token->prev)
-		return (0);
-	if (token->prev->type == TOK_REDIR_IN || token->prev->type == TOK_REDIR_OUT
-		|| token->prev->type == TOK_APPEND || token->prev->type == TOK_HEREDOC)
-		return (1);
-	return (0);
 }

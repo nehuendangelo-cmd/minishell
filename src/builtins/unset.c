@@ -52,11 +52,29 @@ static int	is_valid_identifier(char *name)
 	return (1);
 }
 
+static int	find_to_delete(char ***envp, char *cmd, int *size)
+{
+	int	i;
+	int	to_delete;
+
+	i = 0;
+	to_delete = -1;
+	while ((*envp)[i])
+	{
+		if (ft_strncmp(cmd, (*envp)[i], (ft_strlen(cmd))) == 0
+			&& (*envp)[i][ft_strlen(cmd)] == '=')
+			to_delete = i;
+		i++;
+	}
+	*size = i;
+	return (to_delete);
+}
+
 int	handle_unset(char ***envp, char *cmd)
 {
-	int		i;
-	char	**new_envp;
 	int		to_delete;
+	char	**new_envp;
+	int		size;
 
 	if (!cmd)
 		return (0);
@@ -67,18 +85,10 @@ int	handle_unset(char ***envp, char *cmd)
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (1);
 	}
-	i = 0;
-	to_delete = -1;
-	while ((*envp)[i])
-	{
-		if (ft_strncmp(cmd, (*envp)[i], (ft_strlen(cmd))) == 0
-			&& (*envp)[i][ft_strlen(cmd)] == '=')
-			to_delete = i;
-		i++;
-	}
+	to_delete = find_to_delete(envp, cmd, &size);
 	if (to_delete == -1)
 		return (0);
-	new_envp = make_new_envp(i + 1, to_delete, envp);
+	new_envp = make_new_envp(size + 1, to_delete, envp);
 	*envp = new_envp;
 	return (0);
 }
