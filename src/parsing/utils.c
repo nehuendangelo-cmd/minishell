@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khderdou <khderdou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nehuen <nehuen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 19:46:54 by khderdou          #+#    #+#             */
-/*   Updated: 2026/03/12 23:20:28 by khderdou         ###   ########.fr       */
+/*   Updated: 2026/03/13 19:09:10 by nehuen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*expand_variable(char *str, int *i, char **envp, int last_status)
 		return (tmp = ft_itoa(last_status), (*i)++, tmp);
 	if (str[*i] == '$')
 		return (tmp = ft_itoa(getpid()), (*i)++, tmp);
+	if (str[*i] == '"')
+		return (ft_strdup(""));
 	if (!ft_isalnum(str[*i]) && str[*i] != '_')
 		return (ft_strdup("$"));
 	start = *i;
@@ -78,6 +80,24 @@ char	*ft_expand_word(char *str, char **envp, int last_status)
 			val = expand_variable(str, &i, envp, last_status);
 			res = ft_strjoin_free(res, val);
 			free(val);
+		}
+		else if (str[i] == '~' && quote == 0 && i == 0
+			&& (!str[1] || str[1] == '/' || str[1] == ' '))
+ 		{               
+      val = ft_get_env_value(envp, "HOME");
+      if (val)
+          val = ft_strdup(val);
+      else
+          val = ft_strdup("~");
+      res = ft_strjoin_free(res, val);
+      free(val);
+      i++;
+  	}
+		else if (str[i] == '\\' && quote == 0)
+		{
+			i++;
+			if (str[i])
+				res = ft_charjoin(res, str[i++]);
 		}
 		else
 			res = ft_charjoin(res, str[i++]);

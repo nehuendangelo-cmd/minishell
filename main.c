@@ -32,13 +32,35 @@ static void	process_line(char *line, t_shell *shell)
 	free(line);
 }
 
+static char	*read_line_non_interactive(void)
+{
+	char	*line;
+	size_t	len;
+	ssize_t	nread;
+
+	line = NULL;
+	len = 0;
+	nread = getline(&line, &len, stdin);
+	if (nread == -1)
+	{
+		free(line);
+		return (NULL);
+	}
+	if (nread > 0 && line[nread - 1] == '\n')
+		line[nread - 1] = '\0';
+	return (line);
+}
+
 static void	main_loop(t_shell *shell)
 {
 	char	*line;
 
 	while (1)
 	{
-		line = readline("minishell$ ");
+		if (isatty(fileno(stdin)))
+			line = readline("minishell$ ");
+		else
+			line = read_line_non_interactive();
 		if (!line)
 			break ;
 		if (g_signal == SIGINT)
@@ -62,4 +84,5 @@ int	main(int argc, char **argv, char **envp)
 	shell.envp = ft_copy_env(envp);
 	shell.last_exit = 0;
 	main_loop(&shell);
+	return (shell.last_exit);
 }

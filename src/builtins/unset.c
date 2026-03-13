@@ -34,6 +34,24 @@ static char	**make_new_envp(int size, int to_delete, char ***envp)
 	return (new_envp);
 }
 
+static int	is_valid_identifier(char *name)
+{
+	int	i;
+
+	if (!name || !name[0])
+		return (0);
+	if (!ft_isalpha(name[0]) && name[0] != '_')
+		return (0);
+	i = 1;
+	while (name[i])
+	{
+		if (!ft_isalnum(name[i]) && name[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	handle_unset(char ***envp, char *cmd)
 {
 	int		i;
@@ -42,6 +60,13 @@ int	handle_unset(char ***envp, char *cmd)
 
 	if (!cmd)
 		return (0);
+	if (!is_valid_identifier(cmd))
+	{
+		ft_putstr_fd("minishell: unset: `", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
+		return (1);
+	}
 	i = 0;
 	to_delete = -1;
 	while ((*envp)[i])

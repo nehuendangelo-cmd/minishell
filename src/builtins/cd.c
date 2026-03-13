@@ -66,6 +66,8 @@ int	handle_cd(char **cmd, char ***envp)
 	modify_env(envp, pwd_buffer);
 	free(pwd_buffer);
 	old_pwd = getcwd(NULL, 0);
+	if (cmd[1] && cmd[1][0] == '-' && !cmd[1][1])
+		ft_putendl_fd(old_pwd, 1);
 	pwd_buffer = ft_strjoin("PWD=", old_pwd);
 	modify_env(envp, pwd_buffer);
 	free(pwd_buffer);

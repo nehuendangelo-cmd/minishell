@@ -16,16 +16,7 @@ int	handle_exit(char **cmd, int last_exit_code)
 {
 	if (cmd[1])
 	{
-		if (cmd[2])
-		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(cmd[0], 2);
-			ft_putendl_fd(": too many arguments", 2);
-			return (1);
-		}
-		if (ft_is_numeric_str(cmd[1]))
-			exit(ft_atoi(cmd[1]));
-		else
+		if (!ft_is_numeric_str(cmd[1]))
 		{
 			ft_putstr_fd("bash: ", 2);
 			ft_putstr_fd(cmd[0], 2);
@@ -34,6 +25,14 @@ int	handle_exit(char **cmd, int last_exit_code)
 			ft_putendl_fd(": numeric argument required", 2);
 			exit(255);
 		}
+		if (cmd[2])
+		{
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(cmd[0], 2);
+			ft_putendl_fd(": too many arguments", 2);
+			return (1);
+		}
+		exit(ft_atoi(cmd[1]));
 	}
 	else
 		exit(last_exit_code);
