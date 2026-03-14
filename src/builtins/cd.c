@@ -73,11 +73,6 @@ int	handle_cd(char **cmd, char ***envp)
 	char	*path;
 	char	*old_pwd;
 
-	if (cmd[1] && cmd[2])
-	{
-		ft_putendl_fd("bash: cd: too many arguments", 2);
-		return (1);
-	}
 	path = find_path(cmd, envp);
 	if (!path)
 		return (1);
